@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #f4f7f4;
+  color: #263238;
+}
+
+/* Organic Farm Theme Accents */
+.navbar-agri {
+  background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 60%, #388e3c 100%);
+}
+
+/* Cinematic Multi-layer Hero Slideshow */
+.hero-banner {
+  position: relative;
+  overflow: hidden;
+  color: #ffffff;
+  border-radius: 0 0 28px 28px;
+  min-height: 280px;
+}
+
+.hero-slide-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.05);
+  transition: opacity 1.8s ease-in-out, transform 8s ease-out;
+  z-index: 1;
+}
+
+.hero-slide-layer.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-overlay-dark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(14, 38, 18, 0.72) 0%, rgba(20, 50, 25, 0.82) 100%);
+  z-index: 2;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+}
+.hero-overlay {
+  background: linear-gradient(180deg, rgba(14, 38, 18, 0.78) 0%, rgba(20, 50, 25, 0.82) 100%);
+  width: 100%;
+  height: 100%;
+}
+
+/* Motion Card Hover Effects */
+.agri-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.agri-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(34, 139, 34, 0.12) !important;
+}
+
+/* Animated Pulse Dot for Live Alerts */
+.pulse-badge {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #e53935;
+  box-shadow: 0 0 0 rgba(229, 57, 53, 0.7);
+  animation: pulse 1.6s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.7);
+  }
+  70% {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 10px rgba(229, 57, 53, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(229, 57, 53, 0);
+  }
+}
+
+/* Agricultural Nav Pills */
+.nav-pills-agri .nav-link {
+  color: #37474f;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 10px 18px;
+  transition: all 0.2s ease;
+}
+
+.nav-pills-agri .nav-link.active {
+  background: #2e7d32;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(46, 125, 50, 0.35);
+}
+
+/* Crop Card Header Media */
+.card-img-header {
+  height: 140px;
+  object-fit: cover;
+  width: 100%;
+}
