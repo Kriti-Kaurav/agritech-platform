@@ -12,1345 +12,1429 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import {
-  FaSeedling,
-  FaBug,
-  FaCloudSun,
-  FaLanguage,
-  FaTractor,
-  FaShoppingCart,
-  FaComments,
-  FaUserShield,
-  FaPlus,
-  FaTrash,
   FaCheckCircle,
-  FaSignInAlt,
-  FaSignOutAlt,
-  FaUserCircle
+  FaEye,
+  FaEdit,
+  FaUsers,
+  FaTractor,
+  FaBoxOpen
 } from 'react-icons/fa';
-import { WiDaySunny, WiHumidity, WiStrongWind } from 'react-icons/wi';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const BACKEND_URL = 'http://localhost:5000/api';
-
-const translations = {
-  en: {
-    title: 'AgriTech Smart Farming',
-    heroTag: 'AI-Powered Agronomy, Real-time Field Weather & Regional Market',
-    weatherTab: 'Weather',
-    soilTab: 'Soil & Crops',
-    pestTab: 'Pest Alerts',
-    farmsTab: 'My Farms',
-    storeTab: 'Agri-Store',
-    forumTab: 'Expert Forum',
-    adminBadge: 'Admin Account',
-    farmerBadge: 'Farmer Account',
-    loginRegister: 'Login / Register',
-    signOut: 'Sign Out',
-    adminConsoleTitle: 'Administrator System Control Center',
-    adminConsoleDesc: 'Full administrative privileges active. Manage regional platform metrics, verify store inventory, and review farmer health index.',
-    systemHealthy: 'System Status: Optimal',
-    totalFarms: 'TOTAL REGISTERED FARMS',
-    activePlots: 'Active Plots',
-    totalAcreage: 'TOTAL MONITORED ACREAGE',
-    acresUnderSurv: 'Acres under surveillance',
-    storeRevenue: 'RESOURCE STORE REVENUE',
-    completedOrders: 'Completed Orders',
-    pestThreats: 'REGIONAL PEST THREATS',
-    criticalAlertsActive: 'Critical Alerts Active',
-    systemCropHealth: 'System-wide Crop Health & Performance Indices',
-    liveTelemetry: 'Live Agronomic Telemetry',
-    registeredAccounts: 'Registered Farmer Accounts & Land Holdings',
-    thFarmPlot: 'Farm Plot',
-    thFarmer: 'Registered Farmer',
-    thArea: 'Area',
-    thCrop: 'Crop Type',
-    thHealth: 'Crop Health Index',
-    thAction: 'Admin Action',
-    terminateRecord: 'Terminate Record',
-    registerNewFarm: 'Register New Farm Plot',
-    farmPlotName: 'Farm / Plot Name',
-    farmPlotPlaceholder: 'e.g. Malwa South Field',
-    areaAcres: 'Area (in Acres)',
-    areaPlaceholder: 'e.g. 5.0',
-    currentCrop: 'Current Crop',
-    addFarmBtn: 'Add Farm Profile',
-    myCropHealth: 'My Crop Health & Yield Analytics',
-    activeFarmProfiles: 'Active Farm Profiles',
-    size: 'Size',
-    acres: 'Acres',
-    crop: 'Crop',
-    healthIndex: 'Health Index',
-    optimal: 'Optimal',
-    regionalWeather: 'Regional Weather Forecast',
-    agronomistView: 'Agronomist Advisory View',
-    enterCityPlaceholder: 'Enter city name...',
-    updateWeather: 'Update Weather',
-    humidity: 'Humidity',
-    windSpeed: 'Wind Speed',
-    advisory: 'Advisory',
-    soilParamInput: 'Soil Parameter Input',
-    advisoryDiagnosticTool: 'Advisory Diagnostic Tool',
-    soilType: 'Soil Type',
-    soilBlack: 'Black Soil (काली मिट्टी)',
-    soilAlluvial: 'Alluvial Soil (जलोढ़ मिट्टी)',
-    soilRed: 'Red Soil (लाल मिट्टी)',
-    soilClay: 'Clay / Loam (दोमट मिट्टी)',
-    soilPh: 'Soil pH',
-    runDiagnostics: 'Run Soil Diagnostics',
-    diagnosticRecs: 'Diagnostic Recommendations',
-    recCrops: 'Recommended Crops',
-    phStatus: 'pH Status',
-    fertStrategy: 'Fertilizer Strategy',
-    irrigation: 'Irrigation',
-    adjustSoilPrompt: 'Adjust soil parameters and click analyze.',
-    broadcastPestAlert: 'Broadcast Regional Pest Alert (Admin Advisory Tool)',
-    targetCrop: 'Target Crop',
-    cropPlaceholder: 'e.g. Cotton, Mustard, Wheat',
-    pestIdentifier: 'Pest / Disease Identifier',
-    pestPlaceholder: 'e.g. Whitefly / Stem Rot',
-    threatSeverity: 'Threat Severity Level',
-    severityHigh: 'High (Immediate Action)',
-    severityMedium: 'Medium (Active Monitoring)',
-    severityLow: 'Low (Advisory)',
-    visualSymptoms: 'Visual Symptoms on Field',
-    symptomsPlaceholder: 'Describe yellowing, curled leaves, boreholes...',
-    prescribedTreatment: 'Prescribed Biological / Chemical Treatment',
-    treatmentPlaceholder: 'Chemical name, dosage, or bio-spray instructions',
-    issueAlertBtn: 'Issue Alert to All Farmers',
-    activeRegionalThreats: 'Active Regional Threats & Infestations',
-    activeWarnings: 'Active Warnings',
-    severityLabel: 'Severity',
-    symptomsLabel: 'Symptoms',
-    remedyLabel: 'Remedy',
-    addNewInventory: 'Add New Inventory Item to Store',
-    productTitle: 'Product Title & Quantity',
-    productPlaceholder: 'e.g. Bio-Potash Granules (25kg)',
-    category: 'Category',
-    unitPrice: 'Unit Price (₹)',
-    stockQty: 'Stock Quantity',
-    stockPlaceholder: 'Units in warehouse',
-    publishBtn: 'Approve & Publish to Store',
-    liveInventory: 'Live Resource Inventory',
-    statusApproved: 'Status: Approved',
-    availableStock: 'Available Warehouse Stock',
-    units: 'units',
-    allOrdersTitle: 'All Customer Orders & Transactions',
-    thOrderId: 'Order ID',
-    thPurchasingFarmer: 'Purchasing Farmer',
-    thItemDesc: 'Item Description',
-    thQty: 'Qty',
-    thTotalPaid: 'Total Paid',
-    thStatus: 'Status',
-    approvedSuppliesTitle: 'Approved Agricultural Seeds & Fertilizers',
-    purchaseResource: 'Purchase Resource',
-    inStock: 'In Stock',
-    myPurchaseHistory: 'My Resource Purchase History',
-    askExpertTitle: 'Ask an Agricultural Expert',
-    askPlaceholder: 'Ask a crop disease, soil, or farming question...',
-    submitQuestion: 'Submit Question',
-    communityDiscussions: 'Community Discussions & Solutions',
-    askedBy: 'Asked by',
-    expertAnswer: 'Expert Answer',
-    writeReplyPlaceholder: 'Write expert advisory reply...',
-    postReply: 'Post Reply',
-    awaitingReply: 'Awaiting Agronomist Reply',
-    authModalRegTitle: 'Register AgriTech Account',
-    authModalLoginTitle: 'Sign In to AgriTech',
-    fullName: 'Full Name',
-    namePlaceholder: 'e.g. Ramesh Patel',
-    emailAddress: 'Email Address',
-    password: 'Password',
-    accountRole: 'Account Role',
-    roleFarmerDesc: 'Farmer (किसान - Crop management, Store, Advisory)',
-    roleAdminDesc: 'System Administrator / Agronomist',
-    btnCreateAccount: 'Create Account & Get JWT',
-    btnSignIn: 'Authenticate & Sign In',
-    alreadyHaveAccount: 'Already have an account?',
-    signInHere: 'Sign In here',
-    newUser: 'New user?',
-    registerHere: 'Register New Account'
+const cropDatabase = {
+  Wheat: {
+    scientific: 'Triticum aestivum',
+    growth: '3-4 months',
+    season: 'Rabi (Winter)',
+    sowing: 'October - November',
+    climate: '15-25°C, 300-400 mm',
+    harvest: 'March - April',
+    soil: 'Loamy soil',
+    pesticides: ['Carbendazim', 'Chlorpyrifos', 'Propiconazole'],
+    fertilizers: ['Nitrogen', 'Phosphorus', 'Potassium'],
+    image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=1000&q=80'
   },
-  hi: {
-    title: 'एग्रीटेक स्मार्ट कृषि मंच',
-    heroTag: 'आधुनिक कृषि तकनीक, सटीक मौसम पूर्वानुमान एवं किसान बाजार',
-    weatherTab: 'मौसम',
-    soilTab: 'मृदा एवं फसल',
-    pestTab: 'कीट चेतावनी',
-    farmsTab: 'मेरे खेत',
-    storeTab: 'कृषि स्टोर',
-    forumTab: 'विशेषज्ञ मंच',
-    adminBadge: 'व्यवस्थापक खाता',
-    farmerBadge: 'किसान खाता',
-    loginRegister: 'लॉग इन / पंजीकरण',
-    signOut: 'लॉग आउट',
-    adminConsoleTitle: 'प्रशासक प्रणाली नियंत्रण केंद्र (Admin Console)',
-    adminConsoleDesc: 'पूर्ण प्रशासनिक अधिकार सक्रिय हैं। क्षेत्रीय मेट्रिक्स, स्टोर स्टॉक और किसान स्वास्थ्य सूचकांक प्रबंधित करें।',
-    systemHealthy: 'सिस्टम स्थिति: उत्तम (Optimal)',
-    totalFarms: 'कुल पंजीकृत खेत',
-    activePlots: 'सक्रिय भूखंड',
-    totalAcreage: 'कुल निगरानी क्षेत्र (एकड़)',
-    acresUnderSurv: 'निगरानी में कुल एकड़',
-    storeRevenue: 'कृषि स्टोर कुल बिक्री',
-    completedOrders: 'पूर्ण ऑर्डर',
-    pestThreats: 'सक्रिय क्षेत्रीय कीट प्रकोप',
-    criticalAlertsActive: 'गंभीर चेतावनियां सक्रिय',
-    systemCropHealth: 'सिस्टम-स्तरीय फसल स्वास्थ्य एवं प्रदर्शन सूचकांक',
-    liveTelemetry: 'लाइव कृषि टेलीमेट्री',
-    registeredAccounts: 'पंजीकृत किसान खाते एवं भूमि विवरण',
-    thFarmPlot: 'खेत का नाम',
-    thFarmer: 'पंजीकृत किसान',
-    thArea: 'क्षेत्रफल',
-    thCrop: 'फसल का प्रकार',
-    thHealth: 'स्वास्थ्य सूचकांक',
-    thAction: 'व्यवस्थापक कार्रवाई',
-    terminateRecord: 'रिकॉर्ड हटाएं',
-    registerNewFarm: 'नया खेत पंजीकृत करें',
-    farmPlotName: 'खेत / भूखंड का नाम',
-    farmPlotPlaceholder: 'उदा. मालवा दक्षिणी खेत',
-    areaAcres: 'क्षेत्रफल (एकड़ में)',
-    areaPlaceholder: 'उदा. 5.0',
-    currentCrop: 'वर्तमान फसल',
-    addFarmBtn: 'खेत प्रोफ़ाइल जोड़ें',
-    myCropHealth: 'मेरी फसल स्वास्थ्य एवं उत्पादन विश्लेषण',
-    activeFarmProfiles: 'सक्रिय खेत प्रोफाइल',
-    size: 'आकार',
-    acres: 'एकड़',
-    crop: 'फसल',
-    healthIndex: 'स्वास्थ्य सूचकांक',
-    optimal: 'उत्तम',
-    regionalWeather: 'क्षेत्रीय मौसम पूर्वानुमान',
-    agronomistView: 'कृषि वैज्ञानिक सलाहकार दृश्य',
-    enterCityPlaceholder: 'शहर / जिले का नाम दर्ज करें...',
-    updateWeather: 'मौसम अपडेट करें',
-    humidity: 'आर्द्रता (Humidity)',
-    windSpeed: 'हवा की गति',
-    advisory: 'कृषि सलाह',
-    soilParamInput: 'मृदा स्वास्थ्य पैरामीटर इनपुट',
-    advisoryDiagnosticTool: 'सलाहकार नैदानिक उपकरण',
-    soilType: 'मिट्टी का प्रकार',
-    soilBlack: 'काली मिट्टी (Black Soil)',
-    soilAlluvial: 'जलोढ़ मिट्टी (Alluvial Soil)',
-    soilRed: 'लाल मिट्टी (Red Soil)',
-    soilClay: 'दोमट मिट्टी (Clay / Loam)',
-    soilPh: 'मिट्टी का pH मान',
-    runDiagnostics: 'मिट्टी का विश्लेषण करें',
-    diagnosticRecs: 'विश्लेषण एवं अनुशंसाएं',
-    recCrops: 'अनुशंसित उच्च उपज वाली फसलें',
-    phStatus: 'pH स्थिति',
-    fertStrategy: 'उर्वरक एवं पोषण योजना',
-    irrigation: 'सिंचाई रणनीति',
-    adjustSoilPrompt: 'मिट्टी का प्रकार और pH चुनें, फिर विश्लेषण पर क्लिक करें।',
-    broadcastPestAlert: 'क्षेत्रीय कीट चेतावनी जारी करें (व्यवस्थापक उपकरण)',
-    targetCrop: 'लक्षित फसल',
-    cropPlaceholder: 'उदा. कपास, सरसों, गेहूं',
-    pestIdentifier: 'कीट / रोग का नाम',
-    pestPlaceholder: 'उदा. सफेद मक्खी / तना छेदक',
-    threatSeverity: 'प्रकोप गंभीरता स्तर',
-    severityHigh: 'उच्च (तत्काल नियंत्रण)',
-    severityMedium: 'मध्यम (निगरानी आवश्यक)',
-    severityLow: 'कम (सामान्य सलाह)',
-    visualSymptoms: 'खेत में दिखने वाले लक्षण',
-    symptomsPlaceholder: 'पत्तियों का पीला पड़ना, मुरझाना, तने में छेद...',
-    prescribedTreatment: 'अनुशंसित जैविक / रासायनिक उपचार',
-    treatmentPlaceholder: 'कीटनाशक का नाम, मात्रा, छिड़काव विधि...',
-    issueAlertBtn: 'सभी किसानों को चेतावनी भेजें',
-    activeRegionalThreats: 'सक्रिय क्षेत्रीय कीट एवं रोग प्रकोप',
-    activeWarnings: 'सक्रिय चेतावनियां',
-    severityLabel: 'गंभीरता',
-    symptomsLabel: 'लक्षण',
-    remedyLabel: 'उपचार',
-    addNewInventory: 'स्टोर में नई कृषि सामग्री जोड़ें',
-    productTitle: 'उत्पाद का नाम एवं मात्रा',
-    productPlaceholder: 'उदा. बायो-पोटाश दानेदार (25 किग्रा)',
-    category: 'श्रेणी',
-    unitPrice: 'मूल्य (₹)',
-    stockQty: 'स्टॉक मात्रा',
-    stockPlaceholder: 'गोदाम में उपलब्ध इकाइयां',
-    publishBtn: 'स्वीकृत कर स्टोर में प्रकाशित करें',
-    liveInventory: 'उपलब्ध कृषि इनपुट सूची',
-    statusApproved: 'स्थिति: स्वीकृत',
-    availableStock: 'गोदाम में उपलब्ध स्टॉक',
-    units: 'इकाइयां',
-    allOrdersTitle: 'सभी किसान ऑर्डर एवं लेनदेन',
-    thOrderId: 'ऑर्डर संख्या',
-    thPurchasingFarmer: 'खरीदार किसान',
-    thItemDesc: 'उत्पाद का विवरण',
-    thQty: 'मात्रा',
-    thTotalPaid: 'कुल भुगतान',
-    thStatus: 'स्थिति',
-    approvedSuppliesTitle: 'प्रमाणित कृषि बीज एवं उर्वरक',
-    purchaseResource: 'सामग्री खरीदें',
-    inStock: 'उपलब्ध स्टॉक',
-    myPurchaseHistory: 'मेरी खरीद का इतिहास',
-    askExpertTitle: 'कृषि विशेषज्ञ से प्रश्न पूछें',
-    askPlaceholder: 'फसल रोग, खाद या खेती से संबंधित प्रश्न पूछें...',
-    submitQuestion: 'प्रश्न जमा करें',
-    communityDiscussions: 'किसान समुदाय चर्चा एवं विशेषज्ञ उत्तर',
-    askedBy: 'पूछा गया द्वारा',
-    expertAnswer: 'विशेषज्ञ समाधान',
-    writeReplyPlaceholder: 'सलाहकार उत्तर लिखें...',
-    postReply: 'उत्तर प्रकाशित करें',
-    awaitingReply: 'कृषि वैज्ञानिक के उत्तर की प्रतीक्षा में',
-    authModalRegTitle: 'एग्रीटेक नया खाता बनाएं',
-    authModalLoginTitle: 'एग्रीटेक खाते में प्रवेश करें',
-    fullName: 'पूरा नाम',
-    namePlaceholder: 'उदा. रमेश पटेल',
-    emailAddress: 'ईमेल पता',
-    password: 'पासवर्ड',
-    accountRole: 'खाता भूमिका (Role)',
-    roleFarmerDesc: 'किसान (Farmer - खेत प्रबंधन, स्टोर, सलाह)',
-    roleAdminDesc: 'सिस्टम प्रशासक / कृषि वैज्ञानिक (Admin)',
-    btnCreateAccount: 'खाता बनाएं एवं JWT प्राप्त करें',
-    btnSignIn: 'प्रवेश करें (Sign In)',
-    alreadyHaveAccount: 'पहले से खाता है?',
-    signInHere: 'यहाँ प्रवेश करें',
-    newUser: 'नया खाता बनाना है?',
-    registerHere: 'यहाँ पंजीकरण करें'
+  Rice: {
+    scientific: 'Oryza sativa',
+    growth: '4-5 months',
+    season: 'Kharif (Monsoon)',
+    sowing: 'June - July',
+    climate: '20-35°C, 1000-1500 mm',
+    harvest: 'November - December',
+    soil: 'Clayey loam',
+    pesticides: ['Cartap Hydrochloride', 'Pymetrozine'],
+    fertilizers: ['Urea', 'DAP', 'MOP'],
+    image: 'https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?auto=format&fit=crop&w=1000&q=80'
+  },
+  Maize: {
+    scientific: 'Zea mays',
+    growth: '3-4 months',
+    season: 'Kharif / Spring',
+    sowing: 'June - July',
+    climate: '18-27°C, 500-750 mm',
+    harvest: 'September - October',
+    soil: 'Well-drained fertile loam',
+    pesticides: ['Atrazine', 'Chlorantraniliprole'],
+    fertilizers: ['Nitrogen', 'Zinc Sulfate', 'NPK'],
+    image: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?auto=format&fit=crop&w=1000&q=80'
+  },
+  Soybean: {
+    scientific: 'Glycine max',
+    growth: '3-3.5 months',
+    season: 'Kharif',
+    sowing: 'June - July',
+    climate: '20-30°C, 600-1000 mm',
+    harvest: 'October',
+    soil: 'Black soil / fertile loam',
+    pesticides: ['Triazophos', 'Chlorantraniliprole'],
+    fertilizers: ['Rhizobium inoculant', 'Single Super Phosphate'],
+    image: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=1000&q=80'
+  },
+  Sugarcane: {
+    scientific: 'Saccharum officinarum',
+    growth: '10-12 months',
+    season: 'Perennial / Spring',
+    sowing: 'February - March',
+    climate: '20-35°C, 1500-2000 mm',
+    harvest: 'December - March',
+    soil: 'Deep rich loamy soil',
+    pesticides: ['Chlorpyrifos', 'Imidacloprid'],
+    fertilizers: ['Heavy Nitrogen', 'Potash', 'Phosphorus'],
+    image: 'https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=1000&q=80'
+  },
+  Potato: {
+    scientific: 'Solanum tuberosum',
+    growth: '2.5-3.5 months',
+    season: 'Rabi (Winter)',
+    sowing: 'October - November',
+    climate: '15-20°C, moderate moisture',
+    harvest: 'January - February',
+    soil: 'Loose, friable sandy loam',
+    pesticides: ['Mancozeb', 'Metribuzin'],
+    fertilizers: ['Potassium rich NPK', 'Farmyard manure'],
+    image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=1000&q=80'
   }
 };
 
-const cropImages = {
-  Soybean: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=600&q=80',
-  Wheat: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600&q=80',
-  Cotton: 'https://images.unsplash.com/photo-1594488554954-46c535496417?auto=format&fit=crop&w=600&q=80',
-  Gram: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80'
-};
-
-const resourceImages = [
-  'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1628352081506-83c43123ed6d?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=600&q=80'
-];
-
 function App() {
-  const [lang, setLang] = useState('en');
-  const [activeTab, setActiveTab] = useState('farms');
+  // Navigation:
+  // Public: 'landing', 'loginChoice'
+  // User: 'userHome', 'cropDetail', 'products', 'orderProduct', 'farms', 'addFarm', 'cropsList', 'addCrop', 'myBookings'
+  // Admin: 'adminDashboard', 'adminUsers', 'adminProducts', 'adminAddProduct'
+  const [currentScreen, setCurrentScreen] = useState('landing');
+  const [currentUser, setCurrentUser] = useState(null); // { role: 'User' | 'Admin', name, email }
 
-  // Carousel Slides (Transitions every 4.5 seconds)
-  const heroSlides = [
-    'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80',
-    'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=1600&q=80',
-    'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=1600&q=80',
-    'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=1600&q=80',
-    'https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=1600&q=80'
-  ];
-  const [slideIndex, setSlideIndex] = useState(0);
+  // Auth form
+  const [loginRole, setLoginRole] = useState('User'); // 'User' or 'Admin'
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [signUpName, setSignUpName] = useState('');
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSlideIndex((prev) => (prev + 1) % heroSlides.length);
-    }, 4500);
-    return () => clearInterval(timer);
-  }, [heroSlides.length]);
+  // Selected crop for Crop Information detail page
+  const [selectedCropKey, setSelectedCropKey] = useState('Wheat');
 
-  // Authentication State
-  const [currentUser, setCurrentUser] = useState(() => {
-    const saved = localStorage.getItem('agri_user');
-    return saved ? JSON.parse(saved) : { name: 'Ramesh Patel', email: 'farmer@agritech.com', role: 'Farmer' };
+  // Weather state (Auto + Manual search)
+  const [searchCity, setSearchCity] = useState('Pālam');
+  const [weatherData, setWeatherData] = useState({
+    city: 'Pālam, IN',
+    temp: 34.6,
+    humidity: 44,
+    wind: '6.33 m/s',
+    pressure: '1002 hPa',
+    condition: 'Overcast Clouds'
   });
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [isRegistering, setIsRegistering] = useState(false);
-  const [authEmail, setAuthEmail] = useState('');
-  const [authPassword, setAuthPassword] = useState('');
-  const [authName, setAuthName] = useState('');
-  const [authRole, setAuthRole] = useState('Farmer');
-  const [authError, setAuthError] = useState('');
 
-  // Weather state
-  const [city, setCity] = useState('Indore');
-  const [weather, setWeather] = useState(null);
+  // Products List state
+  const [products, setProducts] = useState([
+    {
+      id: 'p1',
+      name: 'kaddu',
+      category: 'veg',
+      price: 18000,
+      description: 'tasty',
+      image: 'https://images.unsplash.com/photo-1570586437263-ab629fccc818?auto=format&fit=crop&w=600&q=80'
+    }
+  ]);
+  const [selectedProductToOrder, setSelectedProductToOrder] = useState(null);
 
-  // Soil state
-  const [soilType, setSoilType] = useState('black');
-  const [phLevel, setPhLevel] = useState(6.8);
-  const [soilResult, setSoilResult] = useState(null);
+  // Order Booking Form state
+  const [orderName, setOrderName] = useState('');
+  const [orderEmail, setOrderEmail] = useState('');
+  const [orderPhone, setOrderPhone] = useState('');
+  const [orderQty, setOrderQty] = useState(1);
+
+  // My Bookings state
+  const [bookings, setBookings] = useState([
+    { id: '665611e4f3be', name: 'Soil Moisture Sensor', date: '26/5/2024', qty: 1, price: '₹345', status: 'delivered' },
+    { id: '6656121f09', name: 'Urea', date: '26/5/2024', qty: 1, price: '₹115', status: 'delivered' },
+    { id: '6656138c02f', name: 'Tomato Seeds', date: '26/5/2024', qty: 1, price: '₹85', status: 'delivered' },
+    { id: '665614ea41f', name: 'Seeds Combo', date: '26/5/2024', qty: 1, price: '₹245', status: 'delivered' },
+    { id: '6666ba41842', name: 'Tomato Seeds', date: '5/6/2024', qty: 2, price: '₹125', status: 'on the way' }
+  ]);
 
   // Farms state
-  const [farms, setFarms] = useState([]);
-  const [farmName, setFarmName] = useState('');
-  const [areaAcres, setAreaAcres] = useState('');
-  const [currentCrop, setCurrentCrop] = useState('Soybean');
+  const [farms, setFarms] = useState([
+    { id: 'f1', name: 'Green Valley Field', location: 'Indore, MP', area: '5.0', estDate: '15-01-2024', crop: 'Wheat' }
+  ]);
+  const [farmNameInput, setFarmNameInput] = useState('');
+  const [farmLocationInput, setFarmLocationInput] = useState('');
+  const [farmAreaInput, setFarmAreaInput] = useState('');
+  const [farmDateInput, setFarmDateInput] = useState('');
+  const [farmCropInput, setFarmCropInput] = useState('Wheat');
 
-  // Pest state
-  const [pests, setPests] = useState([]);
+  // Crops (Add Crop) state
+  const [cropsList, setCropsList] = useState([
+    { id: 'c1', name: 'Wheat', variety: 'Golden Hybrid A', qty: '400 kg', plantedDate: '2024-10-10', harvestDate: '2025-03-20' }
+  ]);
+  const [cropNameInput, setCropNameInput] = useState('');
+  const [cropVarietyInput, setCropVarietyInput] = useState('');
+  const [cropQtyInput, setCropQtyInput] = useState('');
+  const [cropPlantedInput, setCropPlantedInput] = useState('');
+  const [cropHarvestInput, setCropHarvestInput] = useState('');
 
-  // Store & Orders state
-  const [resources, setResources] = useState([]);
-  const [orders, setOrders] = useState([]);
+  // Admin Registered Users Directory
+  const [usersList] = useState([
+    { id: '6651b1a06900a89ef0943f73', name: 'syed', email: 'syed4@gmail.com' },
+    { id: '6651e069df25c44188b48de9e', name: 'eff', email: 'eff2@gmail.com' },
+    { id: '6656b21aa1c9df25c44188b4', name: 'Vaishnavi', email: 'vaishnavisallu1710@gmail.com' }
+  ]);
 
-  // Forum state
-  const [forumPosts, setForumPosts] = useState([]);
-  const [newQuestion, setNewQuestion] = useState('');
-  const [expertReply, setExpertReply] = useState({});
+  // Admin Add Product Form state
+  const [newProdName, setNewProdName] = useState('');
+  const [newProdCategory, setNewProdCategory] = useState('veg');
+  const [newProdPrice, setNewProdPrice] = useState('');
+  const [newProdDesc, setNewProdDesc] = useState('');
+  const [newProdImage, setNewProdImage] = useState('');
 
-  // Admin addition forms state
-  const [newResourceName, setNewResourceName] = useState('');
-  const [newResourceCategory, setNewResourceCategory] = useState('Seeds');
-  const [newResourcePrice, setNewResourcePrice] = useState('');
-  const [newResourceStock, setNewResourceStock] = useState('');
-
-  const [newPestCrop, setNewPestCrop] = useState('');
-  const [newPestName, setNewPestName] = useState('');
-  const [newPestSymptoms, setNewPestSymptoms] = useState('');
-  const [newPestRemedy, setNewPestRemedy] = useState('');
-  const [newPestSeverity, setNewPestSeverity] = useState('High');
-
-  const t = translations[lang];
-  const role = currentUser?.role || 'Farmer';
-
+  // Automatic Geolocation Weather lookup on mount
   useEffect(() => {
-    fetchWeather('Indore');
-    fetchFarms();
-    fetchPests();
-    fetchResources();
-    fetchOrders();
-    fetchForum();
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        () => {
+          // Defaults to Palam as in reference screenshot
+        },
+        () => {}
+      );
+    }
   }, []);
 
-  const handleAuthSubmit = async (e) => {
+  const handleSearchWeather = async (e) => {
     e.preventDefault();
-    setAuthError('');
-    const endpoint = isRegistering ? '/auth/register' : '/auth/login';
-    const payload = isRegistering
-      ? { name: authName, email: authEmail, password: authPassword, role: authRole }
-      : { email: authEmail, password: authPassword, role: authRole };
-
+    if (!searchCity) return;
     try {
-      const res = await axios.post(`${BACKEND_URL}${endpoint}`, payload);
-      localStorage.setItem('agri_jwt', res.data.token);
-      localStorage.setItem('agri_user', JSON.stringify(res.data.user));
-      setCurrentUser(res.data.user);
-      setShowAuthModal(false);
-      setAuthEmail('');
-      setAuthPassword('');
-      setAuthName('');
-    } catch (err) {
-      setAuthError(err.response?.data?.message || 'Authentication failed. Please verify credentials.');
+      const res = await axios.get(`http://localhost:5000/api/weather?city=${searchCity}`);
+      setWeatherData({
+        city: `${res.data.city}, IN`,
+        temp: res.data.temp,
+        humidity: res.data.humidity,
+        wind: res.data.windSpeed || '6.33 m/s',
+        pressure: '1002 hPa',
+        condition: res.data.condition || 'Clear Sky'
+      });
+    } catch {
+      setWeatherData({
+        city: `${searchCity}, IN`,
+        temp: 34.6,
+        humidity: 44,
+        wind: '6.33 m/s',
+        pressure: '1002 hPa',
+        condition: 'Overcast Clouds'
+      });
+    }
+  };
+
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    const user = {
+      role: loginRole,
+      name: isSignUp ? signUpName : (loginEmail.split('@')[0] || (loginRole === 'Admin' ? 'Admin' : 'User')),
+      email: loginEmail
+    };
+    setCurrentUser(user);
+    if (loginRole === 'Admin') {
+      setCurrentScreen('adminDashboard');
+    } else {
+      setCurrentScreen('userHome');
     }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('agri_jwt');
-    localStorage.removeItem('agri_user');
     setCurrentUser(null);
-    setShowAuthModal(true);
+    setCurrentScreen('landing');
   };
 
-  const fetchWeather = async (target) => {
-    try {
-      const res = await axios.get(`${BACKEND_URL}/weather?city=${target}`);
-      setWeather(res.data);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const fetchFarms = async () => {
-    try {
-      const res = await axios.get(`${BACKEND_URL}/farms`);
-      setFarms(res.data);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const fetchPests = async () => {
-    try {
-      const res = await axios.get(`${BACKEND_URL}/pests`);
-      setPests(res.data);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const fetchResources = async () => {
-    try {
-      const res = await axios.get(`${BACKEND_URL}/resources`);
-      setResources(res.data);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const fetchOrders = async () => {
-    try {
-      const res = await axios.get(`${BACKEND_URL}/orders`);
-      setOrders(res.data);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const fetchForum = async () => {
-    try {
-      const res = await axios.get(`${BACKEND_URL}/forum`);
-      setForumPosts(res.data);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const handleCreateFarm = async (e) => {
+  const handleOrderSubmit = (e) => {
     e.preventDefault();
-    if (!farmName || !areaAcres) return;
-    try {
-      await axios.post(`${BACKEND_URL}/farms`, {
-        farmerEmail: currentUser?.email || 'farmer@agritech.com',
-        farmName,
-        areaAcres,
-        currentCrop
-      });
-      setFarmName('');
-      setAreaAcres('');
-      fetchFarms();
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const handleDeleteFarm = async (id) => {
-    try {
-      await axios.delete(`${BACKEND_URL}/farms/${id}`);
-      fetchFarms();
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const handleSoilAnalyze = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post(`${BACKEND_URL}/soil/recommend`, { soilType, phLevel });
-      setSoilResult(res.data);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const handleBuyResource = async (item) => {
-    try {
-      await axios.post(`${BACKEND_URL}/orders`, {
-        farmerEmail: currentUser?.email || 'farmer@agritech.com',
-        itemName: item.name,
-        quantity: 1,
-        totalAmount: item.price
-      });
-      fetchOrders();
-      alert(lang === 'hi' ? `सफलता: ${item.name} ऑर्डर कर दिया गया!` : `Success: Ordered ${item.name}!`);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const handleAddResource = async (e) => {
-    e.preventDefault();
-    if (!newResourceName || !newResourcePrice) return;
-    try {
-      await axios.post(`${BACKEND_URL}/resources`, {
-        name: newResourceName,
-        category: newResourceCategory,
-        price: Number(newResourcePrice),
-        stock: Number(newResourceStock) || 10
-      });
-      setNewResourceName('');
-      setNewResourcePrice('');
-      setNewResourceStock('');
-      fetchResources();
-      alert(lang === 'hi' ? 'कृषि स्टोर में नई सामग्री सफलतापूर्वक जोड़ी गई!' : 'Resource published to Agri-Store!');
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const handleCreatePestAlert = (e) => {
-    e.preventDefault();
-    if (!newPestCrop || !newPestName) return;
-    const alertObj = {
-      id: Date.now(),
-      crop: newPestCrop,
-      pest: newPestName,
-      severity: newPestSeverity,
-      symptoms: newPestSymptoms,
-      remedy: newPestRemedy
+    const newBooking = {
+      id: '665' + Math.floor(100000000 + Math.random() * 900000000).toString(16),
+      name: selectedProductToOrder?.name || 'Produce',
+      date: new Date().toLocaleDateString('en-GB'),
+      qty: orderQty,
+      price: `₹${(selectedProductToOrder?.price || 120) * orderQty}`,
+      status: 'confirmed'
     };
-    setPests([alertObj, ...pests]);
-    setNewPestCrop('');
-    setNewPestName('');
-    setNewPestSymptoms('');
-    setNewPestRemedy('');
-    alert(lang === 'hi' ? 'क्षेत्रीय कीट चेतावनी जारी कर दी गई है!' : 'Regional pest advisory broadcasted successfully!');
+    setBookings([newBooking, ...bookings]);
+    alert('Booking confirmed!');
+    setCurrentScreen('myBookings');
   };
 
-  const handleAskQuestion = async (e) => {
+  const handleAddFarmSubmit = (e) => {
     e.preventDefault();
-    if (!newQuestion) return;
-    try {
-      await axios.post(`${BACKEND_URL}/forum/question`, {
-        author: currentUser?.name || 'Farmer',
-        question: newQuestion
-      });
-      setNewQuestion('');
-      fetchForum();
-    } catch (e) {
-      console.error(e);
-    }
+    const newFarm = {
+      id: 'f_' + Date.now(),
+      name: farmNameInput,
+      location: farmLocationInput,
+      area: farmAreaInput,
+      estDate: farmDateInput || '15-01-2024',
+      crop: farmCropInput
+    };
+    setFarms([...farms, newFarm]);
+    setFarmNameInput('');
+    setFarmLocationInput('');
+    setFarmAreaInput('');
+    setFarmDateInput('');
+    alert('Farm Registered Successfully!');
+    setCurrentScreen('farms');
   };
 
-  const handleReplyQuestion = async (id) => {
-    if (!expertReply[id]) return;
-    try {
-      await axios.post(`${BACKEND_URL}/forum/reply`, {
-        id,
-        reply: expertReply[id],
-        expert: `${currentUser?.name || 'Dr. Sharma'} (Admin)`
-      });
-      setExpertReply({ ...expertReply, [id]: '' });
-      fetchForum();
-    } catch (e) {
-      console.error(e);
-    }
+  const handleAddCropSubmit = (e) => {
+    e.preventDefault();
+    const newCrop = {
+      id: 'c_' + Date.now(),
+      name: cropNameInput,
+      variety: cropVarietyInput,
+      qty: cropQtyInput,
+      plantedDate: cropPlantedInput,
+      harvestDate: cropHarvestInput
+    };
+    setCropsList([...cropsList, newCrop]);
+    setCropNameInput('');
+    setCropVarietyInput('');
+    setCropQtyInput('');
+    alert('Crop Added Successfully!');
+    setCurrentScreen('cropsList');
   };
 
-  const chartData = {
-    labels: farms.map(f => f.farmName),
+  const handleAdminAddProductSubmit = (e) => {
+    e.preventDefault();
+    const newProd = {
+      id: 'p_' + Date.now(),
+      name: newProdName,
+      category: newProdCategory,
+      price: Number(newProdPrice),
+      description: newProdDesc,
+      image: newProdImage || 'https://images.unsplash.com/photo-1570586437263-ab629fccc818?auto=format&fit=crop&w=600&q=80'
+    };
+    setProducts([...products, newProd]);
+    setNewProdName('');
+    setNewProdPrice('');
+    setNewProdDesc('');
+    setNewProdImage('');
+    alert('Product added successfully!');
+    setCurrentScreen('adminProducts');
+  };
+
+  // Chart data for Admin dashboard
+  const adminChartData = {
+    labels: ['Users', 'Farms', 'Products'],
     datasets: [
       {
-        label: lang === 'hi' ? 'फसल स्वास्थ्य सूचकांक (%)' : 'Crop Health Score Index (%)',
-        data: farms.map(f => f.healthScore || 85),
-        backgroundColor: 'rgba(46, 125, 50, 0.75)',
-        borderRadius: 8
+        label: 'System Overview Value',
+        data: [usersList.length, farms.length, products.length],
+        backgroundColor: ['#9c27b0', '#f44336', '#009688'],
+        barThickness: 65
       }
     ]
   };
 
   return (
-    <div className="min-vh-100">
-      {/* Top Navbar */}
-      <nav className="navbar navbar-expand-lg navbar-dark navbar-agri px-4 py-3 shadow">
-        <div className="container-fluid">
-          <span className="navbar-brand fw-bold d-flex align-items-center gap-2 fs-4">
-            <FaSeedling className="text-warning fs-3" /> {t.title}
-          </span>
-          <div className="d-flex align-items-center gap-3">
-            {currentUser ? (
-              <div className="d-flex align-items-center gap-2 bg-white bg-opacity-25 px-3 py-1 rounded-pill text-white border border-light border-opacity-50 shadow-sm">
-                <FaUserCircle className="fs-5" />
-                <span className="small fw-semibold">{currentUser.name}</span>
-                <span className={`badge rounded-pill ${currentUser.role === 'Admin' ? 'bg-warning text-dark' : 'bg-light text-success'}`}>
-                  {currentUser.role === 'Admin' ? t.adminBadge : t.farmerBadge}
-                </span>
-                <button className="btn btn-sm text-white ms-1 p-0" onClick={handleLogout} title={t.signOut}>
-                  <FaSignOutAlt />
-                </button>
-              </div>
-            ) : (
-              <button className="btn btn-light btn-sm fw-bold rounded-pill px-3 shadow-sm d-flex align-items-center gap-1" onClick={() => setShowAuthModal(true)}>
-                <FaSignInAlt /> {t.loginRegister}
-              </button>
-            )}
-
-            <button
-              className="btn btn-outline-light btn-sm rounded-pill px-3 fw-semibold d-flex align-items-center gap-1"
-              onClick={() => setLang(lang === 'en' ? 'hi' : 'en')}
-            >
-              <FaLanguage /> {lang === 'en' ? 'हिंदी' : 'English'}
+    <div>
+      {/* =========================================================================
+          NAVBARS
+          ========================================================================= */}
+      {/* 1. PUBLIC LANDING NAVBAR */}
+      {currentScreen === 'landing' && (
+        <nav className="agri-nav d-flex justify-content-between align-items-center">
+          <div className="text-white fw-bold fs-4">Agri-Tech</div>
+          <div className="d-flex align-items-center">
+            <span className="nav-link" onClick={() => { const el = document.getElementById('features'); el && el.scrollIntoView({ behavior: 'smooth' }); }}>Features</span>
+            <span className="nav-link" onClick={() => { const el = document.getElementById('services'); el && el.scrollIntoView({ behavior: 'smooth' }); }}>Services</span>
+            <span className="nav-link" onClick={() => { const el = document.getElementById('about'); el && el.scrollIntoView({ behavior: 'smooth' }); }}>Testimonials</span>
+            <span className="nav-link">Contact</span>
+            <button className="agri-btn-white ms-3" onClick={() => setCurrentScreen('loginChoice')}>
+              Login
             </button>
           </div>
-        </div>
-      </nav>
+        </nav>
+      )}
 
-      {/* Hero Header with True Smooth Crossfade */}
-      <div className="hero-banner mb-4 text-center shadow-sm">
-        {/* Layered Crossfade Backgrounds */}
-        {heroSlides.map((url, idx) => (
-          <div
-            key={idx}
-            className={`hero-slide-layer ${slideIndex === idx ? 'active' : ''}`}
-            style={{ backgroundImage: `url('${url}')` }}
-          />
-        ))}
-
-        {/* Ambient Dark Green Gradient Overlay */}
-        <div className="hero-overlay-dark"></div>
-
-        {/* Foreground Content */}
-        <div className="hero-content py-5 px-4">
-          <div className="container py-2">
-            <span className="badge bg-warning text-dark fw-bold px-3 py-2 rounded-pill mb-2 shadow-sm">
-              🌾 {lang === 'hi' ? 'भारतीय किसान तकनीकी सहायता मंच' : 'Smart Agriculture 4.0 Ecosystem'}
-            </span>
-            <h1 className="fw-bold display-6 mb-2">{t.title}</h1>
-            <p className="lead mb-3 text-white-50">{t.heroTag}</p>
-
-            {/* Slide Navigation Indicator Dots */}
-            <div className="d-flex justify-content-center gap-2 mt-2">
-              {heroSlides.map((_, idx) => (
-                <span
-                  key={idx}
-                  onClick={() => setSlideIndex(idx)}
-                  style={{
-                    width: slideIndex === idx ? '26px' : '8px',
-                    height: '8px',
-                    borderRadius: '10px',
-                    backgroundColor: slideIndex === idx ? '#ffc107' : 'rgba(255,255,255,0.4)',
-                    cursor: 'pointer',
-                    transition: 'all 0.5s ease'
-                  }}
-                />
-              ))}
-            </div>
+      {/* 2. USER (FARMER) NAVBAR */}
+      {currentUser?.role === 'User' && currentScreen !== 'landing' && currentScreen !== 'loginChoice' && (
+        <nav className="agri-nav d-flex justify-content-between align-items-center">
+          <div className="text-white fw-bold fs-4" style={{ cursor: 'pointer' }} onClick={() => setCurrentScreen('userHome')}>
+            Agri-Tech
           </div>
-        </div>
-      </div>
+          <div className="d-flex align-items-center">
+            <span className="nav-link" onClick={() => setCurrentScreen('userHome')}>Home</span>
+            <span className="nav-link" onClick={() => setCurrentScreen('products')}>Products</span>
+            <span className="nav-link" onClick={() => setCurrentScreen('farms')}>Farms</span>
+            <span className="nav-link" onClick={() => setCurrentScreen('cropsList')}>Crops</span>
+            <span className="nav-link" onClick={() => setCurrentScreen('myBookings')}>MyBookings</span>
+            <span className="nav-link" onClick={handleLogout}>Logout</span>
+          </div>
+        </nav>
+      )}
 
-      {/* Main Container */}
-      <div className="container pb-5">
-        {/* Navigation Tabs */}
-        <ul className="nav nav-pills nav-fill nav-pills-agri bg-white p-2 rounded-4 shadow-sm border mb-4">
-          <li className="nav-item">
-            <button className={`nav-link ${activeTab === 'farms' ? 'active' : ''}`} onClick={() => setActiveTab('farms')}>
-              <FaTractor className="me-1" /> {t.farmsTab}
-            </button>
-          </li>
-          <li className="nav-item">
-            <button className={`nav-link ${activeTab === 'weather' ? 'active' : ''}`} onClick={() => setActiveTab('weather')}>
-              <FaCloudSun className="me-1" /> {t.weatherTab}
-            </button>
-          </li>
-          <li className="nav-item">
-            <button className={`nav-link ${activeTab === 'soil' ? 'active' : ''}`} onClick={() => setActiveTab('soil')}>
-              <FaSeedling className="me-1" /> {t.soilTab}
-            </button>
-          </li>
-          <li className="nav-item">
-            <button className={`nav-link ${activeTab === 'pest' ? 'active' : ''}`} onClick={() => setActiveTab('pest')}>
-              <FaBug className="me-1" /> {t.pestTab}
-            </button>
-          </li>
-          <li className="nav-item">
-            <button className={`nav-link ${activeTab === 'store' ? 'active' : ''}`} onClick={() => setActiveTab('store')}>
-              <FaShoppingCart className="me-1" /> {t.storeTab}
-            </button>
-          </li>
-          <li className="nav-item">
-            <button className={`nav-link ${activeTab === 'forum' ? 'active' : ''}`} onClick={() => setActiveTab('forum')}>
-              <FaComments className="me-1" /> {t.forumTab}
-            </button>
-          </li>
-        </ul>
+      {/* 3. ADMIN NAVBAR */}
+      {currentUser?.role === 'Admin' && currentScreen !== 'landing' && currentScreen !== 'loginChoice' && (
+        <nav className="agri-nav d-flex justify-content-between align-items-center">
+          <div className="text-white fw-bold fs-4" style={{ cursor: 'pointer' }} onClick={() => setCurrentScreen('adminDashboard')}>
+            Agri-Tech
+          </div>
+          <div className="d-flex align-items-center">
+            <span className="nav-link" onClick={() => setCurrentScreen('adminDashboard')}>Dashboard</span>
+            <span className="nav-link" onClick={() => setCurrentScreen('adminUsers')}>Users</span>
+            <span className="nav-link" onClick={() => setCurrentScreen('adminProducts')}>Products</span>
+            <span className="nav-link" onClick={() => setCurrentScreen('adminAddProduct')}>Add Product</span>
+            <span className="nav-link" onClick={handleLogout}>Logout</span>
+          </div>
+        </nav>
+      )}
 
-        {/* 1. FARMS TAB */}
-        {activeTab === 'farms' && (
-          <div>
-            {role === 'Admin' ? (
-              <div className="mb-4">
-                <div className="alert alert-warning border-warning d-flex align-items-center justify-content-between p-4 mb-4 rounded-4 shadow-sm">
-                  <div>
-                    <h5 className="fw-bold mb-1 text-dark d-flex align-items-center gap-2">
-                      <FaUserShield className="text-warning fs-4" /> {t.adminConsoleTitle}
+      {/* =========================================================================
+          SCREEN: PUBLIC LANDING PAGE
+          ========================================================================= */}
+      {currentScreen === 'landing' && (
+        <div>
+          {/* Hero Section */}
+          <div className="hero-wrapper">
+            <h1 className="display-4 fw-bold mb-3">Innovative Agriculture Solutions</h1>
+            <p className="lead max-w-700 mb-4" style={{ maxWidth: '650px' }}>
+              Empowering farmers with cutting-edge technology to enhance productivity and sustainability.
+            </p>
+            <button className="agri-btn-green fs-5" onClick={() => setCurrentScreen('loginChoice')}>
+              Get Started
+            </button>
+          </div>
+
+          {/* About Section */}
+          <div className="section-mint text-center py-5" id="about">
+            <span className="text-success fw-bold text-uppercase small">ABOUT US</span>
+            <h2 className="fw-bold mt-1 mb-2">Welcome to Agro Tech</h2>
+            <p className="text-muted mx-auto mb-5" style={{ maxWidth: '750px' }}>
+              Agro Tech is dedicated to revolutionizing the agricultural industry through data-driven precision tools.
+            </p>
+
+            <div className="container">
+              {/* 4 Cards: Mission, Vision, Values, Impact */}
+              <div className="row g-4 mb-5 text-start">
+                <div className="col-md-6">
+                  <div className="white-box p-4 h-100">
+                    <h5 className="fw-bold text-dark d-flex align-items-center gap-2">
+                      <span className="badge bg-success rounded-3 p-2">🎯</span> Our Mission
                     </h5>
-                    <p className="small mb-0 text-muted">{t.adminConsoleDesc}</p>
-                  </div>
-                  <span className="badge bg-dark px-3 py-2 rounded-pill fs-6">{t.systemHealthy}</span>
-                </div>
-
-                <div className="row g-3 mb-4">
-                  <div className="col-md-3">
-                    <div className="card agri-card shadow-sm p-3 bg-white text-center">
-                      <span className="text-muted small fw-bold">{t.totalFarms}</span>
-                      <h2 className="fw-bold text-success mt-2">{farms.length}</h2>
-                      <span className="badge bg-light text-secondary border">{t.activePlots}</span>
-                    </div>
-                  </div>
-                  <div className="col-md-3">
-                    <div className="card agri-card shadow-sm p-3 bg-white text-center">
-                      <span className="text-muted small fw-bold">{t.totalAcreage}</span>
-                      <h2 className="fw-bold text-primary mt-2">
-                        {farms.reduce((acc, f) => acc + (Number(f.areaAcres) || 0), 0).toFixed(1)}
-                      </h2>
-                      <span className="badge bg-light text-secondary border">{t.acresUnderSurv}</span>
-                    </div>
-                  </div>
-                  <div className="col-md-3">
-                    <div className="card agri-card shadow-sm p-3 bg-white text-center">
-                      <span className="text-muted small fw-bold">{t.storeRevenue}</span>
-                      <h2 className="fw-bold text-warning mt-2">
-                        ₹{orders.reduce((acc, o) => acc + (Number(o.totalAmount) || 0), 0)}
-                      </h2>
-                      <span className="badge bg-light text-secondary border">{orders.length} {t.completedOrders}</span>
-                    </div>
-                  </div>
-                  <div className="col-md-3">
-                    <div className="card agri-card shadow-sm p-3 bg-white text-center">
-                      <span className="text-muted small fw-bold">{t.pestThreats}</span>
-                      <h2 className="fw-bold text-danger mt-2">{pests.length}</h2>
-                      <span className="badge bg-danger">{t.criticalAlertsActive}</span>
-                    </div>
+                    <p className="text-muted small mb-0">
+                      Our mission is to enhance productivity and sustainability in agriculture through cutting-edge technology and data-driven solutions.
+                    </p>
                   </div>
                 </div>
-
-                <div className="card agri-card shadow-sm p-4 mb-4 bg-white">
-                  <div className="d-flex justify-content-between align-items-center mb-3">
-                    <h5 className="fw-bold text-dark mb-0">{t.systemCropHealth}</h5>
-                    <span className="badge bg-success rounded-pill px-3 py-2">{t.liveTelemetry}</span>
-                  </div>
-                  <div style={{ height: '260px' }}>
-                    <Bar data={chartData} options={{ responsive: true, maintainAspectRatio: false }} />
+                <div className="col-md-6">
+                  <div className="white-box p-4 h-100">
+                    <h5 className="fw-bold text-dark d-flex align-items-center gap-2">
+                      <span className="badge bg-success rounded-3 p-2">👁️</span> Our Vision
+                    </h5>
+                    <p className="text-muted small mb-0">
+                      Our vision is to be a global leader in providing innovative agricultural technologies that empower farmers and agribusinesses to thrive.
+                    </p>
                   </div>
                 </div>
-
-                <div className="card agri-card shadow-sm p-4 bg-white">
-                  <h5 className="fw-bold text-dark mb-3">{t.registeredAccounts}</h5>
-                  <div className="table-responsive">
-                    <table className="table table-hover align-middle mb-0">
-                      <thead className="table-light">
-                        <tr>
-                          <th>{t.thFarmPlot}</th>
-                          <th>{t.thFarmer}</th>
-                          <th>{t.thArea}</th>
-                          <th>{t.thCrop}</th>
-                          <th>{t.thHealth}</th>
-                          <th>{t.thAction}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {farms.map((f, i) => (
-                          <tr key={f.id || f._id || i}>
-                            <td className="fw-bold text-success">{f.farmName}</td>
-                            <td>{f.farmerEmail || 'farmer@agritech.com'}</td>
-                            <td>{f.areaAcres} {t.acres}</td>
-                            <td><span className="badge bg-secondary rounded-pill">{f.currentCrop}</span></td>
-                            <td>
-                              <span className={`badge rounded-pill ${f.healthScore > 80 ? 'bg-success' : 'bg-warning text-dark'}`}>
-                                {f.healthScore}% {t.optimal}
-                              </span>
-                            </td>
-                            <td>
-                              <button className="btn btn-sm btn-outline-danger rounded-pill" onClick={() => handleDeleteFarm(f.id || f._id)}>
-                                <FaTrash className="me-1" /> {t.terminateRecord}
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                <div className="col-md-6">
+                  <div className="white-box p-4 h-100">
+                    <h5 className="fw-bold text-dark d-flex align-items-center gap-2">
+                      <span className="badge bg-success rounded-3 p-2">💎</span> Our Values
+                    </h5>
+                    <p className="text-muted small mb-0">
+                      We value innovation, sustainability, and collaboration. We are committed to creating solutions that benefit farmers, consumers, and the environment.
+                    </p>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="white-box p-4 h-100">
+                    <h5 className="fw-bold text-dark d-flex align-items-center gap-2">
+                      <span className="badge bg-success rounded-3 p-2">📈</span> Our Impact
+                    </h5>
+                    <p className="text-muted small mb-0">
+                      Our solutions have improved crop yields, reduced resource usage, and enhanced the livelihoods of countless farmers worldwide.
+                    </p>
                   </div>
                 </div>
               </div>
-            ) : (
-              <div>
-                <div className="row g-4 mb-4">
-                  <div className="col-lg-4">
-                    <div className="card agri-card shadow-sm p-4 bg-white h-100">
-                      <h5 className="fw-bold text-success mb-3 d-flex align-items-center gap-2">
-                        <FaPlus className="text-success" /> {t.registerNewFarm}
-                      </h5>
-                      <form onSubmit={handleCreateFarm}>
-                        <div className="mb-2">
-                          <label className="form-label small fw-semibold">{t.farmPlotName}</label>
-                          <input className="form-control rounded-3" placeholder={t.farmPlotPlaceholder} value={farmName} onChange={e => setFarmName(e.target.value)} required />
-                        </div>
-                        <div className="mb-2">
-                          <label className="form-label small fw-semibold">{t.areaAcres}</label>
-                          <input type="number" step="0.1" className="form-control rounded-3" placeholder={t.areaPlaceholder} value={areaAcres} onChange={e => setAreaAcres(e.target.value)} required />
-                        </div>
-                        <div className="mb-3">
-                          <label className="form-label small fw-semibold">{t.currentCrop}</label>
-                          <select className="form-select rounded-3" value={currentCrop} onChange={e => setCurrentCrop(e.target.value)}>
-                            <option value="Soybean">Soybean (सोयाबीन)</option>
-                            <option value="Wheat">Wheat (गेहूं)</option>
-                            <option value="Cotton">Cotton (कपास)</option>
-                            <option value="Gram">Gram / Chana (चना)</option>
-                          </select>
-                        </div>
-                        <button type="submit" className="btn btn-success w-100 fw-bold rounded-pill py-2 shadow-sm">
-                          {t.addFarmBtn}
-                        </button>
-                      </form>
-                    </div>
-                  </div>
 
-                  <div className="col-lg-8">
-                    <div className="card agri-card shadow-sm p-4 bg-white h-100">
-                      <h5 className="fw-bold text-success mb-2">{t.myCropHealth}</h5>
-                      <div style={{ height: '240px' }}>
-                        <Bar data={chartData} options={{ responsive: true, maintainAspectRatio: false }} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <h5 className="fw-bold text-dark mb-3">{t.activeFarmProfiles} ({farms.length})</h5>
-                <div className="row g-3">
-                  {farms.map((f, i) => (
-                    <div className="col-md-4" key={f.id || f._id || i}>
-                      <div className="card agri-card shadow-sm bg-white h-100">
-                        <img
-                          src={cropImages[f.currentCrop] || cropImages.Wheat}
-                          alt={f.currentCrop}
-                          className="card-img-header"
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80';
-                          }}
-                        />
-                        <div className="p-3">
-                          <div className="d-flex justify-content-between align-items-center mb-2">
-                            <h6 className="fw-bold mb-0 text-success fs-5">{f.farmName}</h6>
-                            <button className="btn btn-sm btn-outline-danger rounded-circle p-1" onClick={() => handleDeleteFarm(f.id || f._id)}>
-                              <FaTrash size={12} />
-                            </button>
-                          </div>
-                          <p className="mb-1 text-muted small"><strong>{t.size}:</strong> {f.areaAcres} {t.acres}</p>
-                          <p className="mb-1 text-muted small"><strong>{t.crop}:</strong> {f.currentCrop}</p>
-                          <p className="mb-0 text-muted small"><strong>{t.healthIndex}:</strong> <span className="badge bg-success rounded-pill">{f.healthScore}%</span></p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* 2. WEATHER TAB */}
-        {activeTab === 'weather' && (
-          <div className="card agri-card shadow-sm p-4 bg-white">
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <h4 className="fw-bold text-success mb-0 d-flex align-items-center gap-2">
-                <FaCloudSun /> {t.regionalWeather}
-              </h4>
-              {role === 'Admin' && <span className="badge bg-warning text-dark rounded-pill px-3 py-2">{t.agronomistView}</span>}
-            </div>
-            <div className="row g-2 mb-4">
-              <div className="col-md-9">
-                <input className="form-control form-control-lg rounded-pill px-4" value={city} onChange={e => setCity(e.target.value)} placeholder={t.enterCityPlaceholder} />
-              </div>
-              <div className="col-md-3">
-                <button className="btn btn-success btn-lg w-100 rounded-pill fw-bold shadow-sm" onClick={() => fetchWeather(city)}>{t.updateWeather}</button>
-              </div>
-            </div>
-            {weather && (
+              {/* 4 Stat Boxes: 10K+, 30%, 50%, 100+ */}
               <div className="row g-3">
-                <div className="col-md-4 text-center p-4 bg-light rounded-4 border">
-                  <WiDaySunny className="display-3 text-warning" />
-                  <h5 className="text-secondary mt-1">{weather.city}</h5>
-                  <h1 className="fw-bold display-5 text-dark">{weather.temp}°C</h1>
-                  <span className="badge bg-success rounded-pill px-3 py-1 fs-6">{weather.condition}</span>
-                </div>
-                <div className="col-md-4 text-center p-4 bg-light rounded-4 border">
-                  <WiHumidity className="display-3 text-info" />
-                  <h5 className="text-secondary mt-1">{t.humidity}</h5>
-                  <h1 className="fw-bold display-5 text-dark">{weather.humidity}%</h1>
-                  <span className="badge bg-info text-dark rounded-pill px-3 py-1 fs-6">Relative Index</span>
-                </div>
-                <div className="col-md-4 text-center p-4 bg-light rounded-4 border">
-                  <WiStrongWind className="display-3 text-secondary" />
-                  <h5 className="text-secondary mt-1">{t.windSpeed}</h5>
-                  <h1 className="fw-bold display-5 text-dark">{weather.windSpeed}</h1>
-                  <span className="badge bg-secondary rounded-pill px-3 py-1 fs-6">Velocity</span>
-                </div>
-                <div className="col-12 mt-3">
-                  <div className="alert alert-success d-flex align-items-center gap-3 p-3 rounded-4 mb-0 shadow-sm border-success">
-                    <FaCheckCircle className="fs-3 text-success flex-shrink-0" />
-                    <div>
-                      <strong className="fs-6">{t.advisory}: </strong> {weather.advisory}
-                    </div>
+                <div className="col-md-3">
+                  <div className="white-box p-4 text-center">
+                    <h2 className="fw-bold text-success mb-1">10K+</h2>
+                    <span className="text-muted small">Farmers Empowered</span>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* 3. SOIL ADVISORY TAB */}
-        {activeTab === 'soil' && (
-          <div className="row g-4">
-            <div className="col-md-5">
-              <div className="card agri-card shadow-sm p-4 bg-white">
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <h5 className="fw-bold text-success mb-0 d-flex align-items-center gap-2">
-                    <FaSeedling /> {t.soilParamInput}
-                  </h5>
-                  {role === 'Admin' && <span className="badge bg-warning text-dark rounded-pill">{t.advisoryDiagnosticTool}</span>}
+                <div className="col-md-3">
+                  <div className="white-box p-4 text-center">
+                    <h2 className="fw-bold text-success mb-1">30%</h2>
+                    <span className="text-muted small">Yield Improvement</span>
+                  </div>
                 </div>
-                <form onSubmit={handleSoilAnalyze}>
-                  <div className="mb-3">
-                    <label className="form-label fw-semibold">{t.soilType}</label>
-                    <select className="form-select rounded-3 py-2" value={soilType} onChange={e => setSoilType(e.target.value)}>
-                      <option value="black">{t.soilBlack}</option>
-                      <option value="alluvial">{t.soilAlluvial}</option>
-                      <option value="red">{t.soilRed}</option>
-                      <option value="clay">{t.soilClay}</option>
-                    </select>
+                <div className="col-md-3">
+                  <div className="white-box p-4 text-center">
+                    <h2 className="fw-bold text-success mb-1">50%</h2>
+                    <span className="text-muted small">Water Savings</span>
                   </div>
-                  <div className="mb-4">
-                    <label className="form-label fw-semibold">
-                      {t.soilPh}: <span className="badge bg-secondary ms-2">{phLevel}</span>
-                    </label>
-                    <input type="range" className="form-range" min="4.5" max="9.0" step="0.1" value={phLevel} onChange={e => setPhLevel(e.target.value)} />
-                    <div className="d-flex justify-content-between text-muted small">
-                      <span>4.5 (Acidic)</span>
-                      <span>7.0 (Neutral)</span>
-                      <span>9.0 (Alkaline)</span>
-                    </div>
+                </div>
+                <div className="col-md-3">
+                  <div className="white-box p-4 text-center">
+                    <h2 className="fw-bold text-success mb-1">100+</h2>
+                    <span className="text-muted small">Innovations</span>
                   </div>
-                  <button type="submit" className="btn btn-success w-100 rounded-pill py-2 fw-bold shadow-sm">
-                    {t.runDiagnostics}
-                  </button>
-                </form>
+                </div>
               </div>
             </div>
+          </div>
 
-            <div className="col-md-7">
-              {soilResult ? (
-                <div className="card agri-card shadow-sm p-4 bg-white">
-                  <h5 className="fw-bold text-success mb-3">{t.diagnosticRecs}</h5>
-                  <div className="mb-3">
-                    <h6 className="fw-bold text-dark">{t.recCrops}:</h6>
-                    <div className="d-flex flex-wrap gap-2">
-                      {soilResult.crops.map((c, i) => (
-                        <span key={i} className="badge bg-success rounded-pill px-3 py-2 fs-6">
-                          🌾 {c}
-                        </span>
-                      ))}
-                    </div>
+          {/* Our Features Section */}
+          <div className="section-dark-green text-center py-5" id="features">
+            <h2 className="fw-bold mb-4">Our Features</h2>
+            <div className="container">
+              <div className="row g-4">
+                <div className="col-md-4">
+                  <div className="white-box p-4 text-dark text-center h-100">
+                    <div className="fs-1 mb-2">🌱</div>
+                    <h5 className="fw-bold mb-2">Crop Management</h5>
+                    <p className="text-muted small mb-0">
+                      Real-time monitoring of crop health to detect diseases and pests early.
+                    </p>
                   </div>
-                  <p className="p-2 bg-light rounded-3 border"><strong>{t.phStatus}:</strong> {soilResult.phStatus}</p>
-                  <p className="p-2 bg-light rounded-3 border"><strong>{t.fertStrategy}:</strong> {soilResult.fertilizer}</p>
-                  <p className="p-2 bg-light rounded-3 border mb-0"><strong>{t.irrigation}:</strong> {soilResult.waterAdvice}</p>
                 </div>
-              ) : (
-                <div className="card agri-card shadow-sm p-5 text-center text-muted bg-white h-100 d-flex align-items-center justify-content-center">
-                  <FaSeedling className="display-4 text-success opacity-50 mb-3" />
-                  <p className="mb-0">{t.adjustSoilPrompt}</p>
+                <div className="col-md-4">
+                  <div className="white-box p-4 text-dark text-center h-100">
+                    <div className="fs-1 mb-2">🚜</div>
+                    <h5 className="fw-bold mb-2">Farm Management</h5>
+                    <p className="text-muted small mb-0">
+                      Real-time Farm Management where users can access complete farm management.
+                    </p>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <div className="white-box p-4 text-dark text-center h-100">
+                    <div className="fs-1 mb-2">💧</div>
+                    <h5 className="fw-bold mb-2">Smart Irrigation</h5>
+                    <p className="text-muted small mb-0">
+                      Efficient water management systems that save water and improve crop yields.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Our Services Section */}
+          <div className="section-mint text-center py-5" id="services">
+            <h2 className="fw-bold mb-4 text-dark">Our Services</h2>
+            <div className="container">
+              <p className="text-muted mb-0">Providing comprehensive digital tools, store supplies, and agricultural advisories for farms of all sizes.</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          SCREEN: LOGIN / SIGN UP MODAL VIEW
+          ========================================================================= */}
+      {currentScreen === 'loginChoice' && (
+        <div className="field-form-bg">
+          <div className="form-card">
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h4 className="fw-bold text-success mb-0">{loginRole} {isSignUp ? 'Sign Up' : 'Login'}</h4>
+              <button className="btn-close" onClick={() => setCurrentScreen('landing')}></button>
+            </div>
+
+            {/* Toggle Role */}
+            <div className="btn-group w-100 mb-3" role="group">
+              <button
+                type="button"
+                className={`btn btn-sm ${loginRole === 'User' ? 'btn-success fw-bold' : 'btn-outline-success'}`}
+                onClick={() => setLoginRole('User')}
+              >
+                User Login
+              </button>
+              <button
+                type="button"
+                className={`btn btn-sm ${loginRole === 'Admin' ? 'btn-success fw-bold' : 'btn-outline-success'}`}
+                onClick={() => setLoginRole('Admin')}
+              >
+                Admin Login
+              </button>
+            </div>
+
+            <form onSubmit={handleLoginSubmit}>
+              {isSignUp && (
+                <div className="mb-3">
+                  <label className="form-label small fw-semibold">Full Name</label>
+                  <input className="form-control" placeholder="e.g. Ramesh Patel" value={signUpName} onChange={e => setSignUpName(e.target.value)} required />
                 </div>
               )}
-            </div>
-          </div>
-        )}
 
-        {/* 4. PEST ALERTS TAB */}
-        {activeTab === 'pest' && (
-          <div>
-            {role === 'Admin' && (
-              <div className="card agri-card shadow-sm p-4 mb-4 bg-white border-start border-4 border-danger">
-                <h5 className="fw-bold text-danger mb-3 d-flex align-items-center gap-2">
-                  <FaBug /> {t.broadcastPestAlert}
-                </h5>
-                <form onSubmit={handleCreatePestAlert}>
-                  <div className="row g-3">
-                    <div className="col-md-4">
-                      <label className="form-label small fw-semibold">{t.targetCrop}</label>
-                      <input className="form-control rounded-3" placeholder={t.cropPlaceholder} value={newPestCrop} onChange={e => setNewPestCrop(e.target.value)} required />
-                    </div>
-                    <div className="col-md-5">
-                      <label className="form-label small fw-semibold">{t.pestIdentifier}</label>
-                      <input className="form-control rounded-3" placeholder={t.pestPlaceholder} value={newPestName} onChange={e => setNewPestName(e.target.value)} required />
-                    </div>
-                    <div className="col-md-3">
-                      <label className="form-label small fw-semibold">{t.threatSeverity}</label>
-                      <select className="form-select rounded-3" value={newPestSeverity} onChange={e => setNewPestSeverity(e.target.value)}>
-                        <option value="High">{t.severityHigh}</option>
-                        <option value="Medium">{t.severityMedium}</option>
-                        <option value="Low">{t.severityLow}</option>
-                      </select>
-                    </div>
-                    <div className="col-md-6">
-                      <label className="form-label small fw-semibold">{t.visualSymptoms}</label>
-                      <input className="form-control rounded-3" placeholder={t.symptomsPlaceholder} value={newPestSymptoms} onChange={e => setNewPestSymptoms(e.target.value)} required />
-                    </div>
-                    <div className="col-md-6">
-                      <label className="form-label small fw-semibold">{t.prescribedTreatment}</label>
-                      <input className="form-control rounded-3" placeholder={t.treatmentPlaceholder} value={newPestRemedy} onChange={e => setNewPestRemedy(e.target.value)} required />
-                    </div>
-                    <div className="col-12 text-end">
-                      <button type="submit" className="btn btn-danger fw-bold rounded-pill px-4">
-                        {t.issueAlertBtn}
-                      </button>
-                    </div>
-                  </div>
-                </form>
+              <div className="mb-3">
+                <label className="form-label small fw-semibold">Email Address</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="name@example.com"
+                  value={loginEmail}
+                  onChange={e => setLoginEmail(e.target.value)}
+                  required
+                />
               </div>
-            )}
 
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <h5 className="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
-                <span className="pulse-badge"></span> {t.activeRegionalThreats}
-              </h5>
-              <span className="badge bg-danger rounded-pill px-3 py-2 fs-6">{pests.length} {t.activeWarnings}</span>
-            </div>
-
-            <div className="row g-3">
-              {pests.map(p => (
-                <div className="col-md-6" key={p.id}>
-                  <div className="card agri-card shadow-sm p-4 bg-white h-100">
-                    <div className="d-flex justify-content-between align-items-center mb-2">
-                      <h5 className="fw-bold mb-0 text-dark">🌾 {p.crop}</h5>
-                      <span className={`badge rounded-pill ${p.severity === 'High' ? 'bg-danger' : 'bg-warning text-dark'}`}>
-                        {p.severity} {t.severityLabel}
-                      </span>
-                    </div>
-                    <h6 className="text-danger fw-bold">{p.pest}</h6>
-                    <p className="small text-muted mb-2"><strong>{t.symptomsLabel}:</strong> {p.symptoms}</p>
-                    <div className="p-3 bg-light border rounded-3 small"><strong>{t.remedyLabel}:</strong> {p.remedy}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* 5. AGRI-STORE & ORDERS */}
-        {activeTab === 'store' && (
-          <div>
-            {role === 'Admin' ? (
-              <div className="mb-4">
-                <div className="card agri-card shadow-sm p-4 mb-4 bg-white border-start border-4 border-warning">
-                  <h5 className="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
-                    <FaShoppingCart className="text-warning" /> {t.addNewInventory}
-                  </h5>
-                  <form onSubmit={handleAddResource}>
-                    <div className="row g-3">
-                      <div className="col-md-4">
-                        <label className="form-label small fw-semibold">{t.productTitle}</label>
-                        <input className="form-control rounded-3" placeholder={t.productPlaceholder} value={newResourceName} onChange={e => setNewResourceName(e.target.value)} required />
-                      </div>
-                      <div className="col-md-3">
-                        <label className="form-label small fw-semibold">{t.category}</label>
-                        <select className="form-select rounded-3" value={newResourceCategory} onChange={e => setNewResourceCategory(e.target.value)}>
-                          <option value="Seeds">Seeds</option>
-                          <option value="Fertilizers">Fertilizers</option>
-                          <option value="Pesticides">Pesticides</option>
-                          <option value="Bio-Inputs">Bio-Inputs</option>
-                        </select>
-                      </div>
-                      <div className="col-md-2">
-                        <label className="form-label small fw-semibold">{t.unitPrice}</label>
-                        <input type="number" className="form-control rounded-3" placeholder="₹" value={newResourcePrice} onChange={e => setNewResourcePrice(e.target.value)} required />
-                      </div>
-                      <div className="col-md-3">
-                        <label className="form-label small fw-semibold">{t.stockQty}</label>
-                        <input type="number" className="form-control rounded-3" placeholder={t.stockPlaceholder} value={newResourceStock} onChange={e => setNewResourceStock(e.target.value)} required />
-                      </div>
-                      <div className="col-12 text-end">
-                        <button type="submit" className="btn btn-warning text-dark fw-bold rounded-pill px-4">
-                          {t.publishBtn}
-                        </button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-
-                <h5 className="fw-bold text-dark mb-3">{t.liveInventory} ({resources.length})</h5>
-                <div className="row g-3 mb-4">
-                  {resources.map((r, idx) => (
-                    <div className="col-md-4" key={r.id}>
-                      <div className="card agri-card shadow-sm bg-white h-100">
-                        <img src={resourceImages[idx % resourceImages.length]} alt={r.name} className="card-img-header" />
-                        <div className="p-3">
-                          <div className="d-flex justify-content-between mb-2">
-                            <span className="badge bg-secondary rounded-pill">{r.category}</span>
-                            <span className="badge bg-success rounded-pill">{t.statusApproved}</span>
-                          </div>
-                          <h6 className="fw-bold text-dark">{r.name}</h6>
-                          <h4 className="text-success fw-bold">₹{r.price}</h4>
-                          <p className="small text-muted mb-0">{t.availableStock}: <strong>{r.stock} {t.units}</strong></p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <h5 className="fw-bold text-dark mb-3">{t.allOrdersTitle}</h5>
-                <div className="card agri-card shadow-sm p-4 bg-white">
-                  <div className="table-responsive">
-                    <table className="table table-hover align-middle mb-0">
-                      <thead className="table-light">
-                        <tr>
-                          <th>{t.thOrderId}</th>
-                          <th>{t.thPurchasingFarmer}</th>
-                          <th>{t.thItemDesc}</th>
-                          <th>{t.thQty}</th>
-                          <th>{t.thTotalPaid}</th>
-                          <th>{t.thStatus}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {orders.map(o => (
-                          <tr key={o.id}>
-                            <td className="fw-bold">{o.id}</td>
-                            <td>{o.farmerEmail}</td>
-                            <td>{o.itemName}</td>
-                            <td>{o.quantity}</td>
-                            <td className="text-success fw-bold">₹{o.totalAmount}</td>
-                            <td><span className="badge bg-success rounded-pill px-3 py-1">{o.status}</span></td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+              <div className="mb-3">
+                <label className="form-label small fw-semibold">Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="••••••••"
+                  value={loginPassword}
+                  onChange={e => setLoginPassword(e.target.value)}
+                  required
+                />
               </div>
-            ) : (
-              <div>
-                <h5 className="fw-bold text-success mb-3">{t.approvedSuppliesTitle}</h5>
-                <div className="row g-3 mb-4">
-                  {resources.map((r, idx) => (
-                    <div className="col-md-4" key={r.id}>
-                      <div className="card agri-card shadow-sm bg-white h-100">
-                        <img src={resourceImages[idx % resourceImages.length]} alt={r.name} className="card-img-header" />
-                        <div className="p-3 d-flex flex-column h-100">
-                          <span className="badge bg-secondary rounded-pill mb-2 align-self-start">{r.category}</span>
-                          <h6 className="fw-bold text-dark">{r.name}</h6>
-                          <h4 className="text-success fw-bold">₹{r.price}</h4>
-                          <p className="small text-muted">{t.inStock}: {r.stock} {t.units}</p>
-                          <button className="btn btn-outline-success rounded-pill fw-bold mt-auto" onClick={() => handleBuyResource(r)}>
-                            {t.purchaseResource}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
 
-                <h5 className="fw-bold text-dark mb-3">{t.myPurchaseHistory}</h5>
-                <div className="card agri-card shadow-sm p-4 bg-white">
-                  <div className="table-responsive">
-                    <table className="table table-hover align-middle mb-0">
-                      <thead className="table-light">
-                        <tr>
-                          <th>{t.thOrderId}</th>
-                          <th>{t.thItemDesc}</th>
-                          <th>{t.thQty}</th>
-                          <th>{t.thTotalPaid}</th>
-                          <th>{t.thStatus}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {orders.map(o => (
-                          <tr key={o.id}>
-                            <td className="fw-bold">{o.id}</td>
-                            <td>{o.itemName}</td>
-                            <td>{o.quantity}</td>
-                            <td className="text-success fw-bold">₹{o.totalAmount}</td>
-                            <td><span className="badge bg-success rounded-pill px-3 py-1">{o.status}</span></td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+              <button type="submit" className="agri-btn-green w-100 py-2 mb-3">
+                {isSignUp ? 'Sign Up' : `Login as ${loginRole}`}
+              </button>
+
+              {loginRole === 'User' && (
+                <div className="text-center small">
+                  {isSignUp ? (
+                    <span>Already have an account? <button type="button" className="btn btn-link btn-sm p-0 text-success fw-bold" onClick={() => setIsSignUp(false)}>Login</button></span>
+                  ) : (
+                    <span>Don't have an account? <button type="button" className="btn btn-link btn-sm p-0 text-success fw-bold" onClick={() => setIsSignUp(true)}>Sign Up</button></span>
+                  )}
                 </div>
-              </div>
-            )}
+              )}
+            </form>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* 6. EXPERT FORUM TAB */}
-        {activeTab === 'forum' && (
-          <div>
-            <div className="card agri-card shadow-sm p-4 mb-4 bg-white">
-              <h5 className="fw-bold text-success mb-2 d-flex align-items-center gap-2">
-                <FaComments /> {t.askExpertTitle}
-              </h5>
-              <form onSubmit={handleAskQuestion}>
-                <div className="input-group">
-                  <input className="form-control rounded-start-pill px-4" placeholder={t.askPlaceholder} value={newQuestion} onChange={e => setNewQuestion(e.target.value)} required />
-                  <button type="submit" className="btn btn-success fw-bold rounded-end-pill px-4 shadow-sm">
-                    {t.submitQuestion}
-                  </button>
-                </div>
+      {/* =========================================================================
+          SCREEN: USER HOME PAGE (Weather + Agricultural Information Grid)
+          ========================================================================= */}
+      {currentScreen === 'userHome' && (
+        <div className="section-mint min-vh-100">
+          <div className="container py-4">
+            {/* Weather Forecast Section */}
+            <div className="text-center mb-4">
+              <h2 className="fw-bold text-success mb-1">Weather Forecast</h2>
+              <span className="text-muted small">Current Location: {weatherData.city}</span>
+
+              {/* Search Bar */}
+              <form onSubmit={handleSearchWeather} className="d-flex justify-content-center gap-2 mt-3 mx-auto" style={{ maxWidth: '420px' }}>
+                <input
+                  className="form-control"
+                  placeholder="Pālam"
+                  value={searchCity}
+                  onChange={e => setSearchCity(e.target.value)}
+                />
+                <button type="submit" className="btn btn-success px-4 fw-semibold">
+                  Search
+                </button>
               </form>
             </div>
 
-            <h5 className="fw-bold text-dark mb-3">{t.communityDiscussions}</h5>
-            <div className="d-flex flex-column gap-3">
-              {forumPosts.map(post => (
-                <div className="card agri-card shadow-sm p-4 bg-white" key={post.id}>
-                  <div className="d-flex justify-content-between text-muted small mb-1">
-                    <span>{t.askedBy}: <strong>{post.author}</strong></span>
-                  </div>
-                  <h6 className="fw-bold text-dark mb-2 fs-5">{post.question}</h6>
+            {/* Weather Card */}
+            <div className="white-box p-4 mx-auto mb-5 shadow-sm" style={{ maxWidth: '650px' }}>
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <h4 className="fw-bold mb-0 text-dark">{weatherData.city}</h4>
+                <span className="badge bg-light text-secondary border px-3 py-2 fs-6">
+                  ☁️ {weatherData.condition}
+                </span>
+              </div>
+              <div className="row g-3 text-center">
+                <div className="col-6 col-md-3">
+                  <span className="text-muted small d-block">Temperature</span>
+                  <strong className="fs-5">{weatherData.temp}°C</strong>
+                </div>
+                <div className="col-6 col-md-3">
+                  <span className="text-muted small d-block">Humidity</span>
+                  <strong className="fs-5">{weatherData.humidity}%</strong>
+                </div>
+                <div className="col-6 col-md-3">
+                  <span className="text-muted small d-block">Wind Speed</span>
+                  <strong className="fs-5">{weatherData.wind}</strong>
+                </div>
+                <div className="col-6 col-md-3">
+                  <span className="text-muted small d-block">Pressure</span>
+                  <strong className="fs-5">{weatherData.pressure}</strong>
+                </div>
+              </div>
+            </div>
 
-                  {post.reply ? (
-                    <div className="bg-light p-3 rounded-4 border border-success">
-                      <div className="small text-success fw-bold mb-1">🌱 {t.expertAnswer} ({post.expert}):</div>
-                      <p className="mb-0 text-secondary">{post.reply}</p>
+            {/* Agricultural Information Grid */}
+            <div className="text-center mb-4">
+              <h2 className="fw-bold text-success">Agricultural Information</h2>
+            </div>
+            <div className="row g-4">
+              {Object.keys(cropDatabase).map((key) => (
+                <div className="col-md-4" key={key}>
+                  <div className="white-box overflow-hidden h-100 shadow-sm text-center">
+                    <img src={cropDatabase[key].image} alt={key} className="crop-card-img" />
+                    <div className="p-3">
+                      <h4 className="fw-bold text-dark mb-2">{key}</h4>
+                      <button
+                        className="btn btn-link text-success p-0 fw-semibold text-decoration-none"
+                        onClick={() => {
+                          setSelectedCropKey(key);
+                          setCurrentScreen('cropDetail');
+                        }}
+                      >
+                        Learn More &gt;
+                      </button>
                     </div>
-                  ) : (
-                    role === 'Admin' ? (
-                      <div className="mt-2 input-group">
-                        <input className="form-control form-control-sm rounded-start-pill" placeholder={t.writeReplyPlaceholder} value={expertReply[post.id] || ''} onChange={e => setExpertReply({ ...expertReply, [post.id]: e.target.value })} />
-                        <button className="btn btn-sm btn-success rounded-end-pill px-3 fw-semibold" onClick={() => handleReplyQuestion(post.id)}>
-                          {t.postReply}
-                        </button>
-                      </div>
-                    ) : (
-                      <span className="badge bg-secondary rounded-pill align-self-start px-3 py-1">{t.awaitingReply}</span>
-                    )
-                  )}
+                  </div>
                 </div>
               ))}
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      {/* --- AUTHENTICATION MODAL (LOGIN & REGISTRATION) --- */}
-      {showAuthModal && (
-        <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.65)' }}>
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content shadow-lg border-0 rounded-4 overflow-hidden">
-              <div className="modal-header navbar-agri text-white py-3">
-                <h5 className="modal-title fw-bold">
-                  {isRegistering ? t.authModalRegTitle : t.authModalLoginTitle}
-                </h5>
-                <button type="button" className="btn-close btn-close-white" onClick={() => setShowAuthModal(false)}></button>
-              </div>
-              <div className="modal-body p-4">
-                {authError && <div className="alert alert-danger py-2 small rounded-3">{authError}</div>}
-                <form onSubmit={handleAuthSubmit}>
-                  {isRegistering && (
-                    <div className="mb-3">
-                      <label className="form-label small fw-semibold">{t.fullName}</label>
-                      <input className="form-control rounded-3" placeholder={t.namePlaceholder} value={authName} onChange={e => setAuthName(e.target.value)} required />
+      {/* =========================================================================
+          SCREEN: CROP INFORMATION (DETAILS, PESTICIDES, FERTILIZERS)
+          ========================================================================= */}
+      {currentScreen === 'cropDetail' && (
+        <div className="section-mint min-vh-100 py-4">
+          <div className="container" style={{ maxWidth: '850px' }}>
+            <button className="btn btn-outline-success btn-sm mb-3 rounded-pill" onClick={() => setCurrentScreen('userHome')}>
+              &larr; Back to Agricultural Information
+            </button>
+
+            {/* Crop Header Banner */}
+            <div
+              className="rounded-4 mb-4 d-flex align-items-end p-4 shadow-sm"
+              style={{
+                height: '240px',
+                background: `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.65)), url('${cropDatabase[selectedCropKey].image}') center/cover no-repeat`,
+                color: '#ffffff'
+              }}
+            >
+              <h1 className="fw-bold display-5 mb-0">{selectedCropKey}</h1>
+            </div>
+
+            {/* Crop Details Card */}
+            <div className="white-box p-4 mb-4 shadow-sm">
+              <h5 className="fw-bold text-dark mb-4">Crop Details</h5>
+              <div className="row g-4">
+                <div className="col-md-6">
+                  <div className="d-flex align-items-start gap-2">
+                    <span className="fs-5">🌱</span>
+                    <div>
+                      <span className="text-muted small d-block">Scientific Name</span>
+                      <strong>{cropDatabase[selectedCropKey].scientific}</strong>
                     </div>
-                  )}
-
-                  <div className="mb-3">
-                    <label className="form-label small fw-semibold">{t.emailAddress}</label>
-                    <input type="email" className="form-control rounded-3" placeholder="name@agritech.com" value={authEmail} onChange={e => setAuthEmail(e.target.value)} required />
                   </div>
-
-                  <div className="mb-3">
-                    <label className="form-label small fw-semibold">{t.password}</label>
-                    <input type="password" className="form-control rounded-3" placeholder="••••••••" value={authPassword} onChange={e => setAuthPassword(e.target.value)} required />
+                </div>
+                <div className="col-md-6">
+                  <div className="d-flex align-items-start gap-2">
+                    <span className="fs-5">📅</span>
+                    <div>
+                      <span className="text-muted small d-block">Growth Period</span>
+                      <strong>{cropDatabase[selectedCropKey].growth}</strong>
+                    </div>
                   </div>
-
-                  <div className="mb-4">
-                    <label className="form-label small fw-semibold">{t.accountRole}</label>
-                    <select className="form-select rounded-3" value={authRole} onChange={e => setAuthRole(e.target.value)}>
-                      <option value="Farmer">{t.roleFarmerDesc}</option>
-                      <option value="Admin">{t.roleAdminDesc}</option>
-                    </select>
+                </div>
+                <div className="col-md-6">
+                  <div className="d-flex align-items-start gap-2">
+                    <span className="fs-5">🍂</span>
+                    <div>
+                      <span className="text-muted small d-block">Season</span>
+                      <strong>{cropDatabase[selectedCropKey].season}</strong>
+                    </div>
                   </div>
-
-                  <button type="submit" className="btn btn-success w-100 fw-bold rounded-pill py-2 shadow-sm mb-3">
-                    {isRegistering ? t.btnCreateAccount : t.btnSignIn}
-                  </button>
-
-                  <div className="text-center small">
-                    {isRegistering ? (
-                      <span>{t.alreadyHaveAccount} <button type="button" className="btn btn-link btn-sm p-0 text-success fw-bold" onClick={() => { setIsRegistering(false); setAuthError(''); }}>{t.signInHere}</button></span>
-                    ) : (
-                      <span>{t.newUser} <button type="button" className="btn btn-link btn-sm p-0 text-success fw-bold" onClick={() => { setIsRegistering(true); setAuthError(''); }}>{t.registerHere}</button></span>
-                    )}
+                </div>
+                <div className="col-md-6">
+                  <div className="d-flex align-items-start gap-2">
+                    <span className="fs-5">🌾</span>
+                    <div>
+                      <span className="text-muted small d-block">Sowing Time</span>
+                      <strong>{cropDatabase[selectedCropKey].sowing}</strong>
+                    </div>
                   </div>
-                </form>
+                </div>
+                <div className="col-md-6">
+                  <div className="d-flex align-items-start gap-2">
+                    <span className="fs-5">☁️</span>
+                    <div>
+                      <span className="text-muted small d-block">Climate</span>
+                      <strong>{cropDatabase[selectedCropKey].climate}</strong>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="d-flex align-items-start gap-2">
+                    <span className="fs-5">⏰</span>
+                    <div>
+                      <span className="text-muted small d-block">Harvest Time</span>
+                      <strong>{cropDatabase[selectedCropKey].harvest}</strong>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-12">
+                  <div className="d-flex align-items-start gap-2">
+                    <span className="fs-5">🌍</span>
+                    <div>
+                      <span className="text-muted small d-block">Soil Type</span>
+                      <strong>{cropDatabase[selectedCropKey].soil}</strong>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+
+            {/* Bottom Recommendation Pills */}
+            <div className="row g-3">
+              <div className="col-md-6">
+                <div className="white-box p-3 h-100 shadow-sm">
+                  <h6 className="fw-bold text-danger mb-2">🗑️ Recommended Pesticides</h6>
+                  <div className="d-flex flex-wrap gap-2">
+                    {cropDatabase[selectedCropKey].pesticides.map((pest, i) => (
+                      <span key={i} className="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-2 py-1">
+                        {pest}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="white-box p-3 h-100 shadow-sm">
+                  <h6 className="fw-bold text-primary mb-2">💧 Recommended Fertilizers</h6>
+                  <div className="d-flex flex-wrap gap-2">
+                    {cropDatabase[selectedCropKey].fertilizers.map((fert, i) => (
+                      <span key={i} className="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-2 py-1">
+                        {fert}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          SCREEN: PRODUCTS LIST
+          ========================================================================= */}
+      {currentScreen === 'products' && (
+        <div className="field-form-bg flex-column align-items-stretch justify-content-start">
+          <div className="container py-4">
+            <h2 className="text-white fw-bold text-center mb-4">Products List</h2>
+            <div className="row g-4">
+              {products.map((p) => (
+                <div className="col-md-4" key={p.id}>
+                  <div className="white-box overflow-hidden shadow">
+                    <img src={p.image} alt={p.name} style={{ height: '200px', width: '100%', objectFit: 'cover' }} />
+                    <div className="p-4">
+                      <h4 className="fw-bold text-dark text-center mb-3">{p.name}</h4>
+                      <p className="small text-muted mb-1"><strong>Category:</strong> {p.category}</p>
+                      <p className="small text-muted mb-1"><strong>Price:</strong> {p.price}</p>
+                      <p className="small text-muted mb-3"><strong>Description:</strong> {p.description}</p>
+                      <button
+                        className="btn btn-success w-100 fw-bold"
+                        onClick={() => {
+                          setSelectedProductToOrder(p);
+                          setCurrentScreen('orderProduct');
+                        }}
+                      >
+                        Buy Now
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          SCREEN: ORDER PRODUCT (Your Booking is almost Done!)
+          ========================================================================= */}
+      {currentScreen === 'orderProduct' && (
+        <div className="field-form-bg">
+          <div className="form-card text-center">
+            <h4 className="fw-bold text-dark mb-1">Your Booking is almost Done!</h4>
+            <span className="text-muted small d-block mb-3">Details</span>
+
+            <form onSubmit={handleOrderSubmit} className="text-start">
+              <div className="mb-2">
+                <input
+                  className="form-control"
+                  placeholder="Name"
+                  value={orderName}
+                  onChange={e => setOrderName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="row g-2 mb-3">
+                <div className="col-6">
+                  <input
+                    type="email"
+                    className="form-control"
+                    placeholder="Email"
+                    value={orderEmail}
+                    onChange={e => setOrderEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="col-6">
+                  <input
+                    type="tel"
+                    className="form-control"
+                    placeholder="Phone Number"
+                    value={orderPhone}
+                    onChange={e => setOrderPhone(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Price Breakdown */}
+              <div className="p-3 bg-light rounded-3 mb-3 small">
+                <div className="d-flex justify-content-between mb-1">
+                  <span>Quantity:</span>
+                  <div className="d-flex align-items-center gap-1">
+                    <button type="button" className="btn btn-sm btn-outline-secondary py-0 px-2" onClick={() => setOrderQty(Math.max(1, orderQty - 1))}>-</button>
+                    <span>{orderQty}</span>
+                    <button type="button" className="btn btn-sm btn-outline-secondary py-0 px-2" onClick={() => setOrderQty(orderQty + 1)}>+</button>
+                  </div>
+                </div>
+                <div className="d-flex justify-content-between mb-1">
+                  <span>Price:</span>
+                  <span>₹ {(selectedProductToOrder?.price || 120) * orderQty}</span>
+                </div>
+                <div className="d-flex justify-content-between mb-1">
+                  <span>Convenience Fee:</span>
+                  <span>₹ 45</span>
+                </div>
+                <hr className="my-1" />
+                <div className="d-flex justify-content-between fw-bold text-dark">
+                  <span>Total Amount:</span>
+                  <span>₹ {((selectedProductToOrder?.price || 120) * orderQty) + 45}</span>
+                </div>
+              </div>
+
+              <div className="d-flex gap-2">
+                <button type="button" className="btn btn-outline-secondary w-50" onClick={() => setCurrentScreen('products')}>
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-primary w-50 fw-bold">
+                  Book
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          SCREEN: FARMS LIST & ADD FARM BUTTON
+          ========================================================================= */}
+      {currentScreen === 'farms' && (
+        <div className="field-form-bg flex-column align-items-stretch justify-content-start">
+          <div className="container py-4">
+            <div className="d-flex justify-content-between align-items-center mb-4">
+              <h2 className="text-white fw-bold mb-0">Registered Farms</h2>
+              <button className="btn btn-success fw-bold px-4" onClick={() => setCurrentScreen('addFarm')}>
+                + Register New Farm
+              </button>
+            </div>
+
+            <div className="row g-4">
+              {farms.map((f) => (
+                <div className="col-md-6" key={f.id}>
+                  <div className="white-box p-4 shadow">
+                    <h4 className="fw-bold text-success mb-2">{f.name}</h4>
+                    <p className="mb-1 text-muted"><strong>Location:</strong> {f.location}</p>
+                    <p className="mb-1 text-muted"><strong>Area Size:</strong> {f.area} Acres</p>
+                    <p className="mb-1 text-muted"><strong>Established Date:</strong> {f.estDate}</p>
+                    <p className="mb-0 text-muted"><strong>Primary Crop:</strong> <span className="badge bg-secondary">{f.crop}</span></p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          SCREEN: REGISTER NEW FARM FORM
+          ========================================================================= */}
+      {currentScreen === 'addFarm' && (
+        <div className="field-form-bg">
+          <div className="form-card">
+            <h4 className="fw-bold text-dark text-center mb-1">Register New Farm</h4>
+            <span className="text-muted small text-center d-block mb-3">Provide details about your agricultural land</span>
+
+            <form onSubmit={handleAddFarmSubmit}>
+              <div className="mb-2">
+                <label className="form-label small fw-semibold">Farm Name*</label>
+                <input
+                  className="form-control"
+                  placeholder="e.g. Green Valley Field"
+                  value={farmNameInput}
+                  onChange={e => setFarmNameInput(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="mb-2">
+                <label className="form-label small fw-semibold">Location*</label>
+                <input
+                  className="form-control"
+                  placeholder="e.g. Country, State"
+                  value={farmLocationInput}
+                  onChange={e => setFarmLocationInput(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="row g-2 mb-2">
+                <div className="col-6">
+                  <label className="form-label small fw-semibold">Area Size (acres)*</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    className="form-control"
+                    placeholder="e.g. 5.0"
+                    value={farmAreaInput}
+                    onChange={e => setFarmAreaInput(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="col-6">
+                  <label className="form-label small fw-semibold">Established Date</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    value={farmDateInput}
+                    onChange={e => setFarmDateInput(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label small fw-semibold">Primary Crop Type*</label>
+                <select
+                  className="form-select"
+                  value={farmCropInput}
+                  onChange={e => setFarmCropInput(e.target.value)}
+                >
+                  <option value="Wheat">Wheat</option>
+                  <option value="Rice">Rice</option>
+                  <option value="Maize">Maize</option>
+                  <option value="Soybean">Soybean</option>
+                </select>
+              </div>
+
+              <div className="d-flex gap-2">
+                <button type="button" className="btn btn-outline-secondary w-50" onClick={() => setCurrentScreen('farms')}>
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-success w-50 fw-bold">
+                  Register Farm
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          SCREEN: CROPS LIST & ADD CROP
+          ========================================================================= */}
+      {currentScreen === 'cropsList' && (
+        <div className="field-form-bg flex-column align-items-stretch justify-content-start">
+          <div className="container py-4">
+            <div className="d-flex justify-content-between align-items-center mb-4">
+              <h2 className="text-white fw-bold mb-0">Managed Crops</h2>
+              <button className="btn btn-success fw-bold px-4" onClick={() => setCurrentScreen('addCrop')}>
+                + Add Crop
+              </button>
+            </div>
+
+            <div className="row g-4">
+              {cropsList.map((c) => (
+                <div className="col-md-6" key={c.id}>
+                  <div className="white-box p-4 shadow">
+                    <h4 className="fw-bold text-success mb-2">{c.name}</h4>
+                    <p className="mb-1 text-muted"><strong>Variety:</strong> {c.variety}</p>
+                    <p className="mb-1 text-muted"><strong>Quantity:</strong> {c.qty}</p>
+                    <p className="mb-1 text-muted"><strong>Planted Date:</strong> {c.plantedDate}</p>
+                    <p className="mb-0 text-muted"><strong>Harvest Date:</strong> {c.harvestDate}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          SCREEN: ADD NEW CROP FORM
+          ========================================================================= */}
+      {currentScreen === 'addCrop' && (
+        <div className="field-form-bg">
+          <div className="form-card">
+            <h4 className="fw-bold text-dark text-center mb-1">Add New Crop</h4>
+            <span className="text-muted small text-center d-block mb-3">Fill in the details of your new crop planting</span>
+
+            <form onSubmit={handleAddCropSubmit}>
+              <div className="mb-2">
+                <label className="form-label small fw-semibold">Crop Name</label>
+                <input
+                  className="form-control"
+                  placeholder="e.g. Wheat, Rice, Corn"
+                  value={cropNameInput}
+                  onChange={e => setCropNameInput(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="mb-2">
+                <label className="form-label small fw-semibold">Variety</label>
+                <input
+                  className="form-control"
+                  placeholder="e.g. Golden Hybrid A"
+                  value={cropVarietyInput}
+                  onChange={e => setCropVarietyInput(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="mb-2">
+                <label className="form-label small fw-semibold">Quantity (tons/kg)</label>
+                <input
+                  className="form-control"
+                  placeholder="Enter quantity"
+                  value={cropQtyInput}
+                  onChange={e => setCropQtyInput(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="row g-2 mb-3">
+                <div className="col-6">
+                  <label className="form-label small fw-semibold">Planted Date</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    value={cropPlantedInput}
+                    onChange={e => setCropPlantedInput(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="col-6">
+                  <label className="form-label small fw-semibold">Harvest Date</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    value={cropHarvestInput}
+                    onChange={e => setCropHarvestInput(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="d-flex gap-2">
+                <button type="button" className="btn btn-outline-secondary w-50" onClick={() => setCurrentScreen('cropsList')}>
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-success w-50 fw-bold">
+                  Add Crop
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          SCREEN: MY ORDERS / MY BOOKINGS
+          ========================================================================= */}
+      {currentScreen === 'myBookings' && (
+        <div className="section-mint min-vh-100 py-4">
+          <div className="container" style={{ maxWidth: '950px' }}>
+            <h2 className="fw-bold text-dark text-center mb-4">My Bookings</h2>
+
+            <div className="white-box p-4 shadow-sm">
+              <div className="table-responsive">
+                <table className="table table-hover align-middle mb-0">
+                  <thead className="table-light small">
+                    <tr>
+                      <th>BookingId</th>
+                      <th>Product Name</th>
+                      <th>BookingDate</th>
+                      <th>Quantity</th>
+                      <th>Price</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bookings.map((b) => (
+                      <tr key={b.id}>
+                        <td className="small text-muted">{b.id}</td>
+                        <td className="fw-semibold text-dark">{b.name}</td>
+                        <td className="small text-muted">{b.date}</td>
+                        <td>{b.qty}</td>
+                        <td className="fw-bold">{b.price}</td>
+                        <td>
+                          <span className={`badge rounded-pill ${b.status === 'delivered' ? 'bg-success' : 'bg-warning text-dark'}`}>
+                            {b.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          SCREEN: ADMIN DASHBOARD (3 Stat cards, Chart, Recent Users/Products)
+          ========================================================================= */}
+      {currentScreen === 'adminDashboard' && (
+        <div className="section-mint min-vh-100 py-4">
+          <div className="container" style={{ maxWidth: '950px' }}>
+            <div className="text-center mb-4">
+              <h2 className="fw-bold text-dark mb-1">Admin Dashboard</h2>
+              <span className="text-muted small">Overview of your agricultural management system</span>
+            </div>
+
+            {/* 3 Metric Cards */}
+            <div className="row g-3 mb-4">
+              <div className="col-md-4">
+                <div className="white-box p-3 d-flex justify-content-between align-items-center shadow-sm">
+                  <div className="d-flex align-items-center gap-3">
+                    <span className="badge rounded-3 p-3 bg-primary bg-opacity-10 text-primary fs-4">👥</span>
+                    <span className="small text-muted fw-bold">Total Users</span>
+                  </div>
+                  <h3 className="fw-bold mb-0">{usersList.length}</h3>
+                </div>
+              </div>
+              <div className="col-md-4">
+                <div className="white-box p-3 d-flex justify-content-between align-items-center shadow-sm">
+                  <div className="d-flex align-items-center gap-3">
+                    <span className="badge rounded-3 p-3 bg-danger bg-opacity-10 text-danger fs-4">🚜</span>
+                    <span className="small text-muted fw-bold">Total Farms</span>
+                  </div>
+                  <h3 className="fw-bold mb-0">{farms.length}</h3>
+                </div>
+              </div>
+              <div className="col-md-4">
+                <div className="white-box p-3 d-flex justify-content-between align-items-center shadow-sm">
+                  <div className="d-flex align-items-center gap-3">
+                    <span className="badge rounded-3 p-3 bg-success bg-opacity-10 text-success fs-4">📦</span>
+                    <span className="small text-muted fw-bold">Total Products</span>
+                  </div>
+                  <h3 className="fw-bold mb-0">{products.length}</h3>
+                </div>
+              </div>
+            </div>
+
+            {/* System Overview Bar Chart */}
+            <div className="white-box p-4 mb-4 shadow-sm">
+              <h5 className="fw-bold text-dark mb-3">System Overview</h5>
+              <div style={{ height: '240px' }}>
+                <Bar data={adminChartData} options={{ responsive: true, maintainAspectRatio: false }} />
+              </div>
+            </div>
+
+            {/* Recent Users & Recent Products */}
+            <div className="row g-3">
+              <div className="col-md-6">
+                <div className="white-box p-3 shadow-sm h-100">
+                  <h6 className="fw-bold text-dark mb-2">Recent Users</h6>
+                  <div className="d-flex align-items-center gap-2">
+                    <span className="badge bg-light text-secondary rounded-circle p-2">👤</span>
+                    <div>
+                      <strong className="d-block small">{usersList[usersList.length - 1].name}</strong>
+                      <span className="text-muted small">{usersList[usersList.length - 1].email}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="white-box p-3 shadow-sm h-100">
+                  <h6 className="fw-bold text-dark mb-2">Recent Products</h6>
+                  <div className="d-flex align-items-center gap-2">
+                    <span className="badge bg-light text-success rounded-circle p-2">📦</span>
+                    <div>
+                      <strong className="d-block small">{products[products.length - 1].name}</strong>
+                      <span className="text-muted small">{products[products.length - 1].category}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          SCREEN: ADMIN USERS DIRECTORY
+          ========================================================================= */}
+      {currentScreen === 'adminUsers' && (
+        <div className="section-mint min-vh-100 py-4">
+          <div className="container" style={{ maxWidth: '850px' }}>
+            <h2 className="fw-bold text-dark text-center mb-4">Users</h2>
+            <div className="white-box p-4 shadow-sm">
+              <div className="table-responsive">
+                <table className="table table-hover align-middle mb-0">
+                  <thead className="table-light small">
+                    <tr>
+                      <th>S.NO</th>
+                      <th>USER ID</th>
+                      <th>USER NAME</th>
+                      <th>EMAIL</th>
+                      <th>OPERATION</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {usersList.map((u, i) => (
+                      <tr key={u.id}>
+                        <td>{i + 1}</td>
+                        <td className="small text-muted">{u.id}</td>
+                        <td className="fw-semibold">{u.name}</td>
+                        <td>{u.email}</td>
+                        <td>
+                          <div className="d-flex gap-2">
+                            <button className="btn btn-sm btn-outline-primary py-0 px-2" title="Edit">
+                              <FaEdit size={12} /> Edit
+                            </button>
+                            <button className="btn btn-sm btn-outline-info py-0 px-2" title="View">
+                              <FaEye size={12} /> View
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          SCREEN: ADMIN PRODUCTS DIRECTORY
+          ========================================================================= */}
+      {currentScreen === 'adminProducts' && (
+        <div className="field-form-bg flex-column align-items-stretch justify-content-start">
+          <div className="container py-4">
+            <div className="d-flex justify-content-between align-items-center mb-4">
+              <h2 className="text-white fw-bold mb-0">Products List</h2>
+              <button className="btn btn-success fw-bold px-4" onClick={() => setCurrentScreen('adminAddProduct')}>
+                + Add Product
+              </button>
+            </div>
+
+            <div className="row g-4">
+              {products.map((p) => (
+                <div className="col-md-4" key={p.id}>
+                  <div className="white-box overflow-hidden shadow">
+                    <img src={p.image} alt={p.name} style={{ height: '200px', width: '100%', objectFit: 'cover' }} />
+                    <div className="p-4">
+                      <h4 className="fw-bold text-dark text-center mb-3">{p.name}</h4>
+                      <p className="small text-muted mb-1"><strong>Category:</strong> {p.category}</p>
+                      <p className="small text-muted mb-1"><strong>Price:</strong> {p.price}</p>
+                      <p className="small text-muted mb-3"><strong>Description:</strong> {p.description}</p>
+                      <button className="btn btn-success w-100 fw-bold" onClick={() => setCurrentScreen('adminProducts')}>
+                        Buy Now
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          SCREEN: ADMIN ADD PRODUCT
+          ========================================================================= */}
+      {currentScreen === 'adminAddProduct' && (
+        <div className="field-form-bg">
+          <div className="form-card">
+            <h4 className="fw-bold text-dark text-center mb-1">Add New Product</h4>
+            <span className="text-muted small text-center d-block mb-3">Fill in the details of your new agricultural product</span>
+
+            <form onSubmit={handleAdminAddProductSubmit}>
+              <div className="mb-2">
+                <label className="form-label small fw-semibold">Product Name*</label>
+                <input
+                  className="form-control"
+                  placeholder="e.g. Organic Wheat Flour"
+                  value={newProdName}
+                  onChange={e => setNewProdName(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="row g-2 mb-2">
+                <div className="col-6">
+                  <label className="form-label small fw-semibold">Category*</label>
+                  <select
+                    className="form-select"
+                    value={newProdCategory}
+                    onChange={e => setNewProdCategory(e.target.value)}
+                  >
+                    <option value="veg">veg</option>
+                    <option value="fruit">fruit</option>
+                    <option value="grain">grain</option>
+                    <option value="seed">seed</option>
+                  </select>
+                </div>
+                <div className="col-6">
+                  <label className="form-label small fw-semibold">Price (₹)*</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    placeholder="e.g. 100.00"
+                    value={newProdPrice}
+                    onChange={e => setNewProdPrice(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="mb-2">
+                <label className="form-label small fw-semibold">Description*</label>
+                <textarea
+                  rows="2"
+                  className="form-control"
+                  placeholder="Describe the product features and benefits"
+                  value={newProdDesc}
+                  onChange={e => setNewProdDesc(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label small fw-semibold">Image URL*</label>
+                <input
+                  className="form-control"
+                  placeholder="https://example.com/image.jpg"
+                  value={newProdImage}
+                  onChange={e => setNewProdImage(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="d-flex gap-2">
+                <button type="button" className="btn btn-outline-secondary w-50" onClick={() => setCurrentScreen('adminProducts')}>
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-success w-50 fw-bold">
+                  Add Product
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
