@@ -1,18 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --primary-green: #1b5e20;
-  --accent-green: #2e7d32;
-  --light-mint: #f0fdf4;
-  --mint-bg: #e8f5e9;
-  --surface-white: #ffffff;
-  --text-dark: #1e293b;
-  --text-muted: #64748b;
-  --radius-lg: 16px;
-  --radius-sm: 10px;
-  --shadow-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
-  --shadow-hover: 0 16px 32px -4px rgba(46, 125, 50, 0.15);
-  --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --slate-950: #070a11;
+  --slate-900: #0f172a;
+  --slate-800: #1e293b;
+  --emerald-600: #059669;
+  --emerald-500: #10b981;
+  --emerald-400: #34d399;
+  --amber-500: #f59e0b;
+  --amber-600: #d97706;
+  --sky-500: #0ea5e9;
+  --canvas-bg: #f8fafc;
+  --surface: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --border-light: rgba(148, 163, 184, 0.2);
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --shadow-float: 0 20px 35px -5px rgba(15, 23, 42, 0.08), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
+  --radius-xl: 20px;
+  --radius-pill: 9999px;
+  --transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * {
@@ -21,8 +29,8 @@
 
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background-color: var(--mint-bg);
-  color: var(--text-dark);
+  background-color: var(--canvas-bg);
+  color: var(--text-primary);
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
@@ -32,215 +40,324 @@ body {
    Navigation Bar
    ========================================================================== */
 .agri-nav {
-  background: linear-gradient(135deg, #164e1c 0%, #2e7d32 100%) !important;
-  padding: 14px 40px;
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  background: rgba(7, 10, 17, 0.94) !important;
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 36px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   position: sticky;
   top: 0;
   z-index: 1050;
 }
 
-.agri-nav .nav-link {
-  color: rgba(255, 255, 255, 0.88) !important;
-  font-weight: 600;
-  font-size: 0.95rem;
-  margin: 0 12px;
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   cursor: pointer;
-  position: relative;
-  transition: var(--transition-smooth);
 }
 
-.agri-nav .nav-link:hover {
-  color: #ffffff !important;
-  transform: translateY(-1px);
+.brand-text {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #ffffff;
 }
 
-.agri-nav .nav-link::after {
-  content: '';
-  position: absolute;
-  width: 0%;
-  height: 2px;
-  bottom: -4px;
-  left: 0;
-  background-color: #facc15;
-  transition: var(--transition-smooth);
-  border-radius: 2px;
+.brand-text span {
+  color: var(--emerald-400);
 }
 
-.agri-nav .nav-link:hover::after {
-  width: 100%;
+.nav-link-custom {
+  color: #94a3b8;
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: var(--transition);
 }
 
-/* Nav Buttons */
-.agri-btn-white {
-  background: #ffffff;
-  color: var(--accent-green) !important;
-  font-weight: 700;
-  border-radius: 50px;
-  padding: 8px 24px;
-  border: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: var(--transition-smooth);
+.nav-link-custom:hover,
+.nav-link-custom.active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.agri-btn-white:hover {
-  background: #f8fafc;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+.user-profile-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 4px 14px 4px 5px;
+  border-radius: var(--radius-pill);
+  color: #ffffff;
 }
 
-.agri-btn-green {
-  background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
-  color: #ffffff !important;
-  border-radius: 50px;
-  padding: 10px 30px;
-  border: none;
-  font-weight: 700;
-  box-shadow: 0 8px 20px rgba(46, 125, 50, 0.28);
-  transition: var(--transition-smooth);
-  letter-spacing: 0.3px;
-}
-
-.agri-btn-green:hover {
-  background: linear-gradient(135deg, #1b5e20 0%, #144216 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(46, 125, 50, 0.38);
+.avatar-disc {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--emerald-500) 0%, var(--emerald-600) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
 }
 
 /* ==========================================================================
-   Hero Section
+   Hero Cross-Fading Slideshow
    ========================================================================== */
-.hero-wrapper {
-  background: linear-gradient(180deg, rgba(14, 43, 17, 0.72) 0%, rgba(20, 60, 24, 0.82) 100%),
-              url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-  min-height: 480px;
+.hero-slider-container {
+  position: relative;
+  height: 520px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   text-align: center;
   color: #ffffff;
-  padding: 60px 20px;
-  position: relative;
   overflow: hidden;
 }
 
-.hero-wrapper h1 {
-  font-weight: 800;
-  letter-spacing: -0.8px;
-  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+.hero-slide-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 6s ease-out;
+  z-index: 1;
 }
 
-.hero-wrapper p {
-  color: rgba(255, 255, 255, 0.9);
+.hero-slide-bg.active-slide {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-dark-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(7, 10, 17, 0.72) 0%, rgba(7, 10, 17, 0.88) 100%);
+  z-index: 2;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  max-width: 820px;
+  padding: 0 20px;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  color: var(--emerald-400);
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 6px 18px;
+  border-radius: var(--radius-pill);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+.hero-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  letter-spacing: -1.2px;
+  line-height: 1.15;
+  margin-bottom: 18px;
+}
+
+.hero-subtitle {
+  font-size: 1.12rem;
+  color: #cbd5e1;
   font-weight: 400;
   line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+/* Custom Buttons */
+.btn-emerald {
+  background: linear-gradient(135deg, var(--emerald-500) 0%, var(--emerald-600) 100%);
+  color: #ffffff !important;
+  font-weight: 700;
+  padding: 12px 30px;
+  border-radius: var(--radius-pill);
+  border: none;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+  transition: var(--transition);
+}
+
+.btn-emerald:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(16, 185, 129, 0.5);
+}
+
+.btn-amber {
+  background: linear-gradient(135deg, var(--amber-500) 0%, var(--amber-600) 100%);
+  color: #ffffff !important;
+  font-weight: 700;
+  padding: 12px 30px;
+  border-radius: var(--radius-pill);
+  border: none;
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35);
+  transition: var(--transition);
+}
+
+.btn-amber:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(245, 158, 11, 0.45);
 }
 
 /* ==========================================================================
-   Cards & Layouts
+   Smooth Sliding Role Toggle (Farmer / Admin)
    ========================================================================== */
-.section-mint {
-  background: #f1f8f2;
-  padding: 48px 20px;
-}
-
-.section-dark-green {
-  background: linear-gradient(180deg, #102e13 0%, #19441d 100%);
-  color: #ffffff;
-  padding: 64px 20px;
-}
-
-.white-box {
-  background: var(--surface-white);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-subtle);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  transition: var(--transition-smooth);
-}
-
-.white-box:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-hover);
-}
-
-/* Crop & Product Image Styling */
-.crop-card-img {
-  height: 200px;
-  width: 100%;
-  object-fit: cover;
-  border-top-left-radius: var(--radius-lg);
-  border-top-right-radius: var(--radius-lg);
-  transition: transform 0.4s ease;
-}
-
-.white-box:hover .crop-card-img {
-  transform: scale(1.02);
-}
-
-/* Forms Background */
-.field-form-bg {
-  background: linear-gradient(rgba(14, 38, 17, 0.65), rgba(14, 38, 17, 0.8)),
-              url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80') center/cover fixed no-repeat;
-  min-height: calc(100vh - 65px);
-  padding: 50px 20px;
+.role-toggle-track {
+  position: relative;
+  background: #e2e8f0;
+  border-radius: var(--radius-pill);
+  padding: 4px;
   display: flex;
-  justify-content: center;
+  margin-bottom: 24px;
+  user-select: none;
+}
+
+.role-toggle-slider {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: calc(50% - 4px);
+  border-radius: var(--radius-pill);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+  z-index: 1;
+}
+
+.role-toggle-slider.user-active {
+  left: 4px;
+  transform: translateX(0%);
+  background: linear-gradient(135deg, var(--emerald-500) 0%, var(--emerald-600) 100%);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+}
+
+.role-toggle-slider.admin-active {
+  left: 4px;
+  transform: translateX(100%);
+  background: linear-gradient(135deg, var(--amber-500) 0%, var(--amber-600) 100%);
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+}
+
+.role-toggle-btn {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+.role-toggle-btn.active {
+  color: #ffffff;
+}
+
+.role-toggle-btn.inactive {
+  color: #64748b;
+}
+
+/* ==========================================================================
+   Dashboard Canvas (Subtle ambient post-login background)
+   ========================================================================== */
+.dashboard-canvas {
+  min-height: calc(100vh - 65px);
+  background:
+    radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.08) 0px, transparent 50%),
+    #f8fafc;
+  padding: 40px 20px 80px 20px;
+}
+
+/* Glassmorphic Cards */
+.glass-card {
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  overflow: hidden;
+}
+
+.glass-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-float);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+/* Vector Glyph Badges */
+.feature-glyph {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin: 0 auto 16px auto;
 }
 
-.form-card {
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(16px);
-  border-radius: 20px;
-  max-width: 520px;
-  width: 100%;
-  padding: 36px 32px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  animation: fadeInModal 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+.glyph-emerald { background: rgba(16, 185, 129, 0.12); color: var(--emerald-600); }
+.glyph-sky { background: rgba(14, 165, 233, 0.12); color: var(--sky-500); }
+.glyph-amber { background: rgba(245, 158, 11, 0.12); color: var(--amber-600); }
+
+/* Scroll Reveal Keyframe Animation */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes fadeInModal {
-  from {
-    opacity: 0;
-    transform: translateY(12px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Form Controls */
 .form-control, .form-select {
-  border-radius: var(--radius-sm);
+  border-radius: 12px;
   border: 1.5px solid #cbd5e1;
   padding: 10px 14px;
   font-size: 0.95rem;
-  transition: var(--transition-smooth);
+  transition: var(--transition);
 }
 
 .form-control:focus, .form-select:focus {
-  border-color: #2e7d32;
-  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+  border-color: var(--emerald-500);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
   outline: none;
 }
 
-/* Tables */
-.table {
-  border-collapse: separate;
-  border-spacing: 0;
-}
-
+/* Modern Tables */
 .table thead th {
   background-color: #f8fafc;
   color: var(--text-muted);
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   letter-spacing: 0.6px;
   padding: 14px 16px;
   border-bottom: 1.5px solid #e2e8f0;
@@ -250,15 +367,4 @@ body {
   padding: 14px 16px;
   vertical-align: middle;
   border-bottom: 1px solid #f1f5f9;
-}
-
-.table-hover tbody tr:hover {
-  background-color: rgba(46, 125, 50, 0.03);
-}
-
-/* Custom Badges */
-.badge {
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  border-radius: 50px;
 }
